@@ -161,8 +161,8 @@ After=multi-user.target
 Type=simple
 User=astroberry
 Environment=HOME=/home/astroberry
-ExecStart=vncserver -display :70 -desktop astroberry -SecurityTypes None -NeverShared -DisconnectClients -localhost yes -UseIPv6 no -geometry 1920x1080 -depth 24 -fg -xstartup startxfce4
-ExecStop=vncserver -kill
+ExecStart=tigervncserver -display :70 -desktop astroberry -SecurityTypes None -NeverShared -DisconnectClients -localhost yes -UseIPv6 no -geometry 1920x1080 -depth 24 -fg -xstartup startxfce4
+ExecStop=tigervncserver -kill
 Restart=on-failure
 RestartSec=1
 
