@@ -70,7 +70,23 @@ curl -fsSL https://astroberry.io/debian/astroberry.asc \
 # Add Astroberry OS repository
 curl -fsSL https://astroberry.io/debian/astroberry.sources \
     | sudo tee /etc/apt/sources.list.d/astroberry.sources
+```
 
+**Important note**
+Astroberry OS APT repository provides the latest versions of some packages, which older versions are also available in Debian and Raspberry OS repositories.
+You need to set higher priority to Astroberry OS APT repository to avoid packages installation issues. To set higher priority to the repository run the following command:
+
+```
+cat <<EOF > /etc/apt/preferences.d/astroberry-pin
+Package: *
+Pin: origin astroberry.io
+Pin-Priority: 900
+EOF
+```
+
+Finally you can install Astroberry OS.
+
+```
 # Install Astroberry OS
 sudo apt update && sudo apt install astroberry-os-lite
 ```
