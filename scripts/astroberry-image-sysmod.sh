@@ -104,6 +104,16 @@ polkit.addRule(function(action, subject) {
 });
 EOF
 
+# Enable members of plugdev group to mount and eject external drives
+cat <<EOF > /etc/polkit-1/rules.d/10-file-manager.rules
+polkit.addRule(function(action, subject) {
+  if (action.id.startsWith("org.freedesktop.udisks2") &&
+       subject.isInGroup("plugdev")) {
+    return polkit.Result.YES;
+  }
+});
+EOF
+
 # Disable graphical login
 update-rc.d lightdm disable
 
