@@ -38,7 +38,7 @@ jobs:
 
       - name: Build INDI 3rd Party Drivers
         run: |
-          DRIVERS=$(basename -a indi-3rdparty/indi-* | grep -v indi-libcamera | grep -v indi-bno-imu | grep -v indi-celestron-origin) && \
+          DRIVERS=$(basename -a indi-3rdparty/indi-* | grep -v indi-libcamera | grep -v indi-bno-imu | grep -v indi-celestron-origin | grep -v indi-icm-imu) && \
           indi-3rdparty/scripts/indi-3rdparty-deb.sh $DRIVERS && \
           mkdir indi-3rdparty/indi-full && \
           indi-3rdparty/scripts/indi-3rdparty-deb.sh indi-full
