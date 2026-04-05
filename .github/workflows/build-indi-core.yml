@@ -25,5 +25,4 @@ jobs:
 
       - name: Build INDI Core Packages
         run: |
-          indi/scripts/indi-core-deb.sh && \
-          ls ../indi-bin*.deb && ls ../libindi*.deb
+          indi/scripts/indi-core-deb.sh

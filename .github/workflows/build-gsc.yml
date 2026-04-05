@@ -24,5 +24,5 @@ jobs:
         run: |
           rm -rf build/deb_gsc && mkdir -p build/deb_gsc && \
           cp -r gsc/* build/deb_gsc/ && cd build/deb_gsc && \
-          chmod 755 debian/rules && fakeroot debian/rules binary && \
-          ls ../gsc*.deb
+          chmod 755 debian/rules && \
+          fakeroot debian/rules binary

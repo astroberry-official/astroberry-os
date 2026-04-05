@@ -37,5 +37,4 @@ jobs:
           sed -i "/.PHONY: override_dh_auto_test override_dh_auto_configure/d" build/deb_kstars/debian/rules && \
           cd build/deb_kstars && \
           echo "export DEB_BUILD_OPTIONS := parallel=\$(shell nproc)" >> debian/rules && \
-          fakeroot debian/rules binary && \
-          ls ../kstars*.deb
+          fakeroot debian/rules binary

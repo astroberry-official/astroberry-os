@@ -40,5 +40,4 @@ jobs:
           sed -i "/dh_auto_configure --/s/$/ -DFETCHCONTENT_FULLY_DISCONNECTED=0/" build/deb_phd2/debian/rules && \
           cd build/deb_phd2 && \
           echo "export DEB_BUILD_OPTIONS := parallel=\$(shell nproc)" >> debian/rules && \
-          fakeroot debian/rules binary && \
-          ls ../phd2*.deb
+          fakeroot debian/rules binary

@@ -39,5 +39,5 @@ jobs:
         run: |
           DRIVERS=$(basename -a indi-3rdparty/indi-* | grep -v indi-libcamera | grep -v indi-bno-imu | grep -v indi-celestron-origin) && \
           indi-3rdparty/scripts/indi-3rdparty-deb.sh $DRIVERS && \
-          mkdir indi-3rdparty/indi-full && indi-3rdparty/scripts/indi-3rdparty-deb.sh indi-full && \
-          ls ../indi-*.deb
+          mkdir indi-3rdparty/indi-full && \
+          indi-3rdparty/scripts/indi-3rdparty-deb.sh indi-full

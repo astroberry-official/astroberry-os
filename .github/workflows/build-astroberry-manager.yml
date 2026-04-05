@@ -35,5 +35,4 @@ jobs:
           cp -r astroberry-manager/* build/whl_astroberry-manager/ && \
           python -m venv build/whl_astroberry-manager/.venv && . build/whl_astroberry-manager/.venv/bin/activate && \
           python -m pip install build && \
-          cd build/whl_astroberry-manager && python -m build && cd ../../ && deactivate && \
-          ls build/whl_astroberry-manager/dist/*.whl
+          cd build/whl_astroberry-manager && python -m build && cd ../../ && deactivate

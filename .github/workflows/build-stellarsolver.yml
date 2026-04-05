@@ -29,5 +29,4 @@ jobs:
           cp -r stellarsolver/* build/deb_stellarsolver/ && \
           cd build/deb_stellarsolver && \
           echo "export DEB_BUILD_OPTIONS := parallel=\$(shell nproc)" >> debian/rules && \
-          fakeroot debian/rules binary && \
-          ls ../libstellarsolver*.deb
+          fakeroot debian/rules binary

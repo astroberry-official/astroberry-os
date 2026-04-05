@@ -30,5 +30,4 @@ jobs:
           cd build/deb_phdlogview && \
           echo "DEB_CMAKE_EXTRA_FLAGS += -DHAVE_WXFB:BOOL=FALSE" >> debian/rules && \
           echo "export DEB_BUILD_OPTIONS := parallel=\$(shell nproc)" >> debian/rules && \
-          fakeroot debian/rules binary && \
-          ls ../phdlogview*.deb
+          fakeroot debian/rules binary

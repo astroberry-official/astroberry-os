@@ -34,5 +34,4 @@ jobs:
       - name: Build INDI 3rd Party Libraries
         run: |
           LIBS=$(basename -a indi-3rdparty/lib*) && \
-          indi-3rdparty/scripts/indi-3rdparty-deb.sh $LIBS && \
-          ls ../lib*.deb
+          indi-3rdparty/scripts/indi-3rdparty-deb.sh $LIBS

@@ -26,5 +26,4 @@ jobs:
         run: |
           rm -rf build/deb_astroberry-os && mkdir -p build/deb_astroberry-os && \
           cp -r astroberry-os/* build/deb_astroberry-os/ && cd build/deb_astroberry-os && \
-          fakeroot debian/rules binary && \
-          ls ../astroberry-os-*.deb
+          fakeroot debian/rules binary
