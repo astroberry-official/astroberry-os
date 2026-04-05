@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           repository: 'indilib/indi-3rdparty'
-          ref: refs/tags/v2.1.7.1
+          ref: refs/tags/v2.2.0
           path: 'indi-3rdparty'
 
       - name: Fix INDI 3rd Party Sources

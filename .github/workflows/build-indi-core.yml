@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           repository: 'indilib/indi'
-          ref: refs/tags/v2.1.7
+          ref: refs/tags/v2.2.0
           path: 'indi'
 
       - name: Build INDI Core Packages

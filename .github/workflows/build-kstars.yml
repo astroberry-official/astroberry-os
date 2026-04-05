@@ -19,7 +19,7 @@ jobs:
       - name: Get KStars Sources
         run: |
           if [ -d kstars ]; then rm -rf kstars; fi
-          git clone --depth 1 --branch master https://invent.kde.org/education/kstars.git && cd kstars && git checkout -b stable-3.8.0; fi
+          git clone --depth 1 --branch master https://invent.kde.org/education/kstars.git && cd kstars && git checkout -b stable-3.8.2; fi
 
       - name: Install KStars Dependencies
         run: |
