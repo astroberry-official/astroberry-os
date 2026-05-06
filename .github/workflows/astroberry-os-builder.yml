@@ -15,7 +15,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        container: ["debian-trixie"]
+        distro: ["debian-trixie"]
+        platform: ["arm64"]
 
     steps:
       - name: Login to Registry
@@ -28,6 +29,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v7
         with:
-          file: docker/Dockerfile.${{ matrix.container }}
+          platforms: linux/${{ matrix.platform }}
+          file: docker/Dockerfile.${{ matrix.distro }}
           push: true
-          tags: ghcr.io/${{ github.repository }}/${{ matrix.container }}
+          tags: ghcr.io/${{ github.repository }}/${{ matrix.distro }}-${{ matrix.platform }}

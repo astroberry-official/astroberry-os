@@ -1,4 +1,4 @@
-FROM arm64v8/debian:trixie
+FROM debian:trixie
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -56,7 +56,7 @@ RUN apt-get install -y \
 
 # PHD log viewer dependencies
 RUN apt-get install -y \
-libwxgtk3.2-dev libwxgtk-media3.2-dev
+    libwxgtk3.2-dev libwxgtk-media3.2-dev
 
 # OACAPTURE dependencies
 RUN apt-get install -y \
