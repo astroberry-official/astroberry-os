@@ -1,5 +1,6 @@
 FROM debian:trixie
 
+ARG TARGETPLATFORM
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN cat /etc/os-release
@@ -12,9 +13,11 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y \
     cdbs debhelper pkg-kde-tools reprepro sshpass
 
 # Add raspberry pi repository
-RUN curl -L https://archive.raspberrypi.com/debian/raspberrypi.gpg.key | tee /etc/apt/trusted.gpg.d/raspi.asc && \
-    echo "deb [trusted=yes] http://archive.raspberrypi.com/debian/ trixie main" > /etc/apt/sources.list.d/raspi.list && \
-    apt-get update
+RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
+        curl -L https://archive.raspberrypi.com/debian/raspberrypi.gpg.key | tee /etc/apt/trusted.gpg.d/raspi.asc && \
+        echo "deb [trusted=yes] http://archive.raspberrypi.com/debian/ trixie main" > /etc/apt/sources.list.d/raspi.list && \
+        apt-get update; \
+    fi
 
 # Core development packages
 RUN apt-get install -y \
@@ -38,7 +41,9 @@ RUN apt-get install -y \
     libglib2.0-dev libaravis-dev libcamera-dev libnutclient-dev libsystemd-dev systemd-dev
 
 # INDI libcamera dependencies
-RUN apt-get install -y rpicam-apps librpicam-app-dev
+RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
+        apt-get install -y rpicam-apps librpicam-app-dev; \
+    fi
 
 # StellarSolver dependencies
 RUN apt-get install -y \
