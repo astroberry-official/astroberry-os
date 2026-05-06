@@ -47,7 +47,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
 
 # StellarSolver dependencies
 RUN apt-get install -y \
-    qt6-base-dev wcslib-dev
+    qt6-base-dev libgl1-mesa-dev libcfitsio-dev libgsl-dev wcslib-dev
 
 # Kstars dependencies
 RUN apt-get install -y \
