@@ -6,7 +6,7 @@
 
 ARCH=$(dpkg-architecture | grep DEB_HOST_ARCH= | cut -d= -f2 | xargs)
 
-if [ "$ARCH" -ne "arm64" po "$ARCH" -ne "amd64" ]; then
+if [ "$ARCH" != "arm64" -a "$ARCH" != "amd64" ]; then
     echo "Unknown architecture"
     exit 1
 fi
