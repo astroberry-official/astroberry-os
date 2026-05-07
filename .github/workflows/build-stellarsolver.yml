@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           repository: 'rlancaste/stellarsolver'
-          ref: refs/tags/2.7
+          # ref: refs/tags/2.7
           path: 'stellarsolver'
 
       - name: Build StellarSolver Packages
