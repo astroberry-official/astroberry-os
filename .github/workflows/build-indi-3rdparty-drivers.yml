@@ -10,10 +10,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        container: ["debian-trixie"]
+        distro: ["debian-trixie"]
+        architecture: ["arm64", "amd64"]
 
     container:
-      image: ghcr.io/${{ github.repository }}/${{ matrix.container }}
+      image: ghcr.io/${{ github.repository }}/${{ matrix.distro }}-${{ matrix.architecture }}
 
     steps:
       - name: Get INDI 3rd Party Sources
@@ -31,7 +32,7 @@ jobs:
 
       - name: Install INDI Core
         run: |
-          dpkg -i build/indi-bin_*_arm64.deb build/libindi1_*_arm64.deb build/libindi-data_*_all.deb build/libindi-dev_*_arm64.deb
+          dpkg -i build/indi-bin_*_${{ matrix.architecture }}.deb build/libindi1_*_${{ matrix.architecture }}.deb build/libindi-data_*_all.deb build/libindi-dev_*_${{ matrix.architecture }}.deb
 
       - name: Install INDI 3rd Party Libraries
         run: |

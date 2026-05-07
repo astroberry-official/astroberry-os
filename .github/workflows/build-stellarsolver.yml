@@ -10,17 +10,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        container: ["debian-trixie"]
+        distro: ["debian-trixie"]
+        architecture: ["arm64", "amd64"]
 
     container:
-      image: ghcr.io/${{ github.repository }}/${{ matrix.container }}
+      image: ghcr.io/${{ github.repository }}/${{ matrix.distro }}-${{ matrix.architecture }}
 
     steps:
       - name: Get StellarSolver Sources
         uses: actions/checkout@v6
         with:
           repository: 'rlancaste/stellarsolver'
-          ref: refs/tags/2.7
+          # ref: refs/tags/2.7
           path: 'stellarsolver'
 
       - name: Build StellarSolver Packages

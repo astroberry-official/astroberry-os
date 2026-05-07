@@ -1,5 +1,6 @@
-FROM arm64v8/debian:trixie
+FROM debian:trixie
 
+ARG TARGETPLATFORM
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN cat /etc/os-release
@@ -12,9 +13,11 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y \
     cdbs debhelper pkg-kde-tools reprepro sshpass
 
 # Add raspberry pi repository
-RUN curl -L https://archive.raspberrypi.com/debian/raspberrypi.gpg.key | tee /etc/apt/trusted.gpg.d/raspi.asc && \
-    echo "deb http://archive.raspberrypi.com/debian/ trixie main" > /etc/apt/sources.list.d/raspi.list && \
-    apt-get update
+RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
+        curl -L https://archive.raspberrypi.com/debian/raspberrypi.gpg.key | tee /etc/apt/trusted.gpg.d/raspi.asc && \
+        echo "deb [trusted=yes] http://archive.raspberrypi.com/debian/ trixie main" > /etc/apt/sources.list.d/raspi.list && \
+        apt-get update; \
+    fi
 
 # Core development packages
 RUN apt-get install -y \
@@ -38,17 +41,22 @@ RUN apt-get install -y \
     libglib2.0-dev libaravis-dev libcamera-dev libnutclient-dev libsystemd-dev systemd-dev
 
 # INDI libcamera dependencies
-RUN apt-get install -y rpicam-apps librpicam-app-dev
+RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
+        apt-get install -y rpicam-apps librpicam-app-dev; \
+    fi
 
 # StellarSolver dependencies
 RUN apt-get install -y \
-    qtbase5-dev wcslib-dev
+    qt6-base-dev qt6-base-dev-tools qt6-declarative-dev qt6-svg-dev zlib1g-dev libcfitsio-dev libgsl-dev wcslib-dev
 
 # Kstars dependencies
 RUN apt-get install -y \
-    libkf5plotting-dev libqt5svg5-dev libkf5xmlgui-dev libkf5kio-dev libkf5newstuff-dev libkf5doctools-dev \
-    libkf5notifications-dev qtdeclarative5-dev libkf5crash-dev libkf5notifyconfig-dev libqt5websockets5-dev libqt5datavisualization5-dev \
-    kinit-dev libeigen3-dev gettext xplanet xplanet-images qt5keychain-dev libsecret-1-dev libxisf-dev liberfa-dev breeze-icon-theme
+    qt6-base-dev qt6-declarative-dev qt6-multimedia-dev qt6-positioning-dev libqt6svg6-dev qt6-websockets-dev qt6-datavis3d-dev qtkeychain-qt6-dev libqt6sql6-sqlite \
+    libkf6doctools-dev libkf6config-dev libkf6guiaddons-dev libkf6i18n-dev libkf6newstuff-dev libkf6notifications-dev libkf6xmlgui-dev libkf6plotting-dev \
+    libkf6crash-dev libkf6notifyconfig-dev libeigen3-dev zlib1g-dev libcfitsio-dev libnova-dev wcslib-dev libraw-dev libgsl-dev phonon4qt6-backend-vlc \
+    libsecret-1-dev libxisf-dev libcurl4-gnutls-dev libopencv-dev libopencv-imgproc-dev libopencv-calib3d-dev libopencv-imgcodecs-dev \
+    libopencv-photo-dev libopencv-video-dev
+    # additionally installed at build time: libstellarsolver-dev libindi-dev indi-bin 
 
 # PHD2 dependencies
 RUN apt-get install -y \
@@ -56,12 +64,7 @@ RUN apt-get install -y \
 
 # PHD log viewer dependencies
 RUN apt-get install -y \
-libwxgtk3.2-dev libwxgtk-media3.2-dev
-
-# OACAPTURE dependencies
-RUN apt-get install -y \
-    qtbase5-dev qtbase5-dev-tools qttools5-dev-tools libjpeg-dev libaravis-dev libsdl1.2-dev \
-    libudev-dev libhidapi-dev libv4l-dev libbz2-dev libuvc-dev
+    libwxgtk3.2-dev libwxgtk-media3.2-dev
 
 # ASTROBERRY dependencies
 RUN apt-get install -y \

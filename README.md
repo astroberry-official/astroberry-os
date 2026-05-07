@@ -1,6 +1,8 @@
 # Astroberry OS
 Astroberry OS is an operating system for Raspberry Pi for controlling astronomy equipment.
 
+[![Astroberry OS Sneak Preview](http://img.youtube.com/vi/S5cMd0XJ1Hk/maxresdefault.jpg)](http://www.youtube.com/watch?v=S5cMd0XJ1Hk "Astroberry OS Sneak Preview")
+
 This library provides comprehensive set of tools for automated building of Astroberry OS.
 Is uses self-hosted actions runner to execute GitHub workflows to:
 - build dockerized system builder

@@ -84,7 +84,6 @@ curl -fsSL https://astroberry.io/debian/astroberry.asc | gpg --dearmor -o "$ROOT
 cat <<EOF > "$ROOTFS/etc/apt/sources.list.d/astroberry.sources"
 Types: deb
 URIs: https://astroberry.io/debian/
-Architectures: arm64
 Suites: trixie
 Components: main
 Signed-By: /etc/apt/keyrings/astroberry.gpg

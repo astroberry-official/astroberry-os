@@ -10,10 +10,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        container: ["debian-trixie"]
+        distro: ["debian-trixie"]
+        architecture: ["arm64"]
 
     container:
-      image: ghcr.io/${{ github.repository }}/${{ matrix.container }}
+      image: ghcr.io/${{ github.repository }}/${{ matrix.distro }}-${{ matrix.architecture }}
       volumes:
         - /dev:/dev
       options: --privileged
@@ -36,7 +37,7 @@ jobs:
           IMAGE_URL="https://downloads.raspberrypi.org/raspios_lite_arm64/images/raspios_lite_arm64-2025-12-04" && echo "IMAGE_URL=$IMAGE_URL" >> $GITHUB_ENV
           INPUT_IMAGE="2025-12-04-raspios-trixie-arm64-lite.img" && echo "INPUT_IMAGE=$INPUT_IMAGE" >> $GITHUB_ENV
           # IMPORTANT! image file naming convention: astroberry_x.x_debian-trixie-arm64.img, where x.x is version number e.g 3.0
-          OUTPUT_IMAGE="astroberryos_3.2_${{ matrix.container }}-arm64.img" && echo "OUTPUT_IMAGE=$OUTPUT_IMAGE" >> $GITHUB_ENV
+          OUTPUT_IMAGE="astroberryos_3.2_${{ matrix.distro }}-{{ matrix.architecture }}.img" && echo "OUTPUT_IMAGE=$OUTPUT_IMAGE" >> $GITHUB_ENV
 
       - name: Download Raspberry Pi OS image
         run: |

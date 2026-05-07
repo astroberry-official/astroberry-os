@@ -10,10 +10,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        container: ["debian-trixie"]
+        distro: ["debian-trixie"]
+        architecture: ["arm64", "amd64"]
 
     container:
-      image: ghcr.io/${{ github.repository }}/${{ matrix.container }}
+      image: ghcr.io/${{ github.repository }}/${{ matrix.distro }}-${{ matrix.architecture }}
 
     steps:
       - name: Get PHD2 Log Viewer Sources
