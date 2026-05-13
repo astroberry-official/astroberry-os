@@ -1,4 +1,4 @@
-name: Astroberry OS image (arm64)
+name: Astroberry OS [arm64]
 
 on:
   workflow_dispatch:

@@ -1,4 +1,4 @@
-name: Build INDI 3rd Party Drivers
+name: INDI Drivers
 
 on:
   workflow_dispatch:

@@ -1,4 +1,4 @@
-name: Build INDI Core
+name: INDI Core
 
 on:
   workflow_dispatch:

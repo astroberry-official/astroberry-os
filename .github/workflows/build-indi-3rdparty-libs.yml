@@ -1,4 +1,4 @@
-name: Build INDI 3rd Party Libraries
+name: INDI Libraries
 
 on:
   workflow_dispatch:

@@ -1,7 +1,20 @@
 # Astroberry OS
 Astroberry OS is an operating system for Raspberry Pi for controlling astronomy equipment.
 
-[![Astroberry OS Sneak Preview](http://img.youtube.com/vi/S5cMd0XJ1Hk/maxresdefault.jpg)](http://www.youtube.com/watch?v=S5cMd0XJ1Hk "Astroberry OS Sneak Preview")
+[![Astroberry OS](https://github.com/astroberry-official/astroberry-os/actions/workflows/astroberry-os-image-arm64.yml/badge.svg)](https://github.com/astroberry-official/astroberry-os/actions/workflows/astroberry-os-image-arm64.yml)
+[![Astroberry OS](https://github.com/astroberry-official/astroberry-os/actions/workflows/astroberry-os-image-amd64.yml/badge.svg)](https://github.com/astroberry-official/astroberry-os/actions/workflows/astroberry-os-image-amd64.yml)
+[![Astroberry OS](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-astroberry-manager.yml/badge.svg)](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-astroberry-manager.yml)
+
+[![Astroberry OS](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-indi-core.yml/badge.svg)](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-indi-core.yml)
+[![Astroberry OS](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-indi-3rdparty-libs.yml/badge.svg)](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-indi-3rdparty-libs.yml)
+[![Astroberry OS](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-indi-3rdparty-drivers.yml/badge.svg)](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-indi-3rdparty-drivers.yml)
+[![Astroberry OS](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-stellarsolver.yml/badge.svg)](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-stellarsolver.yml)
+
+[![Astroberry OS](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-kstars.yml/badge.svg)](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-kstars.yml)
+[![Astroberry OS](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-phd2.yml/badge.svg)](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-phd2.yml)
+[![Astroberry OS](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-phdlogview.yml/badge.svg)](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-phdlogview.yml)
+
+[![Astroberry OS](http://img.youtube.com/vi/S5cMd0XJ1Hk/maxresdefault.jpg)](http://www.youtube.com/watch?v=S5cMd0XJ1Hk "Astroberry OS")
 
 This library provides comprehensive set of tools for automated building of Astroberry OS.
 Is uses self-hosted actions runner to execute GitHub workflows to:
@@ -27,7 +40,7 @@ Make sure that your self-hosted actions runner is started before running any wor
   It runs automaticaly whenever you compile and build a debian package. If you need to start it manually, run `scripts/astroberry-docker-run.sh`.
 
 
-- **Astroberry OS image [arm64|amd64]** 💾 build Astroberry OS system image. ⭐ Starting from v3.2 amd64 architecture is supported.
+- **Astroberry OS [arm64|amd64]** 💾 build Astroberry OS system image. ⭐ Starting from v3.2 amd64 architecture is supported.
 
 
 - **Astroberry OS meta-package** 📦 build astroberry-os-[lite|desktop|full] meta-packages that install required packages.
