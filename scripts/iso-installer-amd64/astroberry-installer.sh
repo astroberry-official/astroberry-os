@@ -65,17 +65,28 @@ echo "85" ; echo "# Setting up bootloader (Chroot)..."
 sudo mount --bind /dev /mnt/target/dev
 sudo mount --bind /proc /mnt/target/proc
 sudo mount --bind /sys /mnt/target/sys
-sudo mount --bind /sys/firmware/efi/efivars /mnt/target/sys/firmware/efi/efivars
-
+if [ -d "/sys/firmware/efi" ]; then
+    BOOT_MODE="uefi"
+    sudo mount --bind /sys/firmware/efi/efivars "/mnt/target/sys/firmware/efi/efivars"
+else
+    BOOT_MODE="bios"
+fi
 sudo chroot /mnt/target /bin/bash -c "
     update-initramfs -u
-    grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=astroberry --recheck
+    if [ \"$BOOT_MODE\" = \"uefi\" ]; then
+        grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=astroberry --recheck --removable
+    else
+        grub-install --target=i386-pc \"$TARGET_DRIVE\" --recheck
+    fi
     update-grub
 "
 
 # Unmounting and finalizing
 echo "95" ; echo "# Unmounting and finalizing..."
-sudo umount /mnt/target/dev /mnt/target/proc /mnt/target/sys/firmware/efi/efivars /mnt/target/sys
+if [ $BOOT_MODE == "uefi" ]; then
+    sudo umount /mnt/target/sys/firmware/efi/efivars
+fi
+sudo umount /mnt/target/dev /mnt/target/proc /mnt/target/sys
 sudo umount /mnt/target/boot/efi
 sudo umount /mnt/target
 sudo sync

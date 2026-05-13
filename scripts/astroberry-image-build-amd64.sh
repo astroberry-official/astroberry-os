@@ -58,7 +58,7 @@ mount --rbind /dev/pts $ROOTFS/dev/pts
 sed -i 's/main$/main contrib non-free-firmware non-free/' $ROOTFS/etc/apt/sources.list
 chroot $ROOTFS apt-get update
 chroot $ROOTFS apt-get install -y --no-install-recommends linux-image-generic firmware-linux-nonfree \
-  shim-signed grub-efi-amd64-signed \
+  shim-signed grub-efi-amd64-signed grub-efi-amd64 grub-pc-bin \
   intel-microcode va-driver-all haveged zstd cloud-init sudo console-setup
 chroot $ROOTFS apt-get install -y curl gpg
 
@@ -137,6 +137,13 @@ chroot $ROOTFS /bin/bash -c \
 cp $WDIR/astroberry-installer.sh $ROOTFS/opt/
 cp $WDIR/astroberry-installer.desktop $ROOTFS/usr/share/applications/
 
+# Copy the installer and icon files to the image
+cp $WDIR/astroberry-installer.sh $ROOTFS/opt/
+cp $WDIR/astroberry-installer.desktop $ROOTFS/usr/share/applications/
+
+# Change the default grub configuration for old nic names
+sed -i '/GRUB_CMDLINE_LINUX_DEFAULT/c\GRUB_CMDLINE_LINUX_DEFAULT="quiet net.ifnames=0 biosdevname=0"' $ROOTFS/etc/default/grub
+
 # Synchronize filesystem
 sync
 
@@ -161,7 +168,7 @@ INITRD=$(ls $ROOTFS/boot/initrd.img-*)
 cp -v $INITRD iso/live/initrd
 
 # Copy the shim and grub bootloader to the iso
-cp $ROOTFS/usr/lib/shim/shimx64.efi.signed iso/EFI/BOOT/BOOTX64.efi
+cp $ROOTFS/usr/lib/shim/shimx64.efi.signed iso/EFI/BOOT/BOOTX64.EFI
 cp $ROOTFS/usr/lib/grub/x86_64-efi-signed/grubx64.efi.signed iso/EFI/BOOT/grubx64.efi
 
 # Create the grub configuration for the iso
@@ -175,7 +182,7 @@ insmod all_video
 
 menuentry "Astroberry Live" {
     search --set=root --file /live/filesystem.squashfs
-    linux /live/vmlinuz boot=live components quiet splash noeject noautologin
+    linux /live/vmlinuz boot=live components quiet splash noeject noautologin net.ifnames=0 biosdevname=0
     initrd /live/initrd
 }
 EOF
