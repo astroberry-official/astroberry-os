@@ -8,11 +8,11 @@ Astroberry OS is an operating system for Raspberry Pi for controlling astronomy 
 [![Astroberry OS](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-indi-core.yml/badge.svg)](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-indi-core.yml)
 [![Astroberry OS](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-indi-3rdparty-libs.yml/badge.svg)](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-indi-3rdparty-libs.yml)
 [![Astroberry OS](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-indi-3rdparty-drivers.yml/badge.svg)](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-indi-3rdparty-drivers.yml)
-[![Astroberry OS](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-stellar-solver.yml/badge.svg)](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-stellar-solver.yml)
+[![Astroberry OS](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-stellarsolver.yml/badge.svg)](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-stellarsolver.yml)
 
 [![Astroberry OS](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-kstars.yml/badge.svg)](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-kstars.yml)
 [![Astroberry OS](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-phd2.yml/badge.svg)](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-phd2.yml)
-[![Astroberry OS](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-phd2-logviewer.yml/badge.svg)](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-phd2-logviewer.yml)
+[![Astroberry OS](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-phdlogview.yml/badge.svg)](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-phdlogview.yml)
 
 [![Astroberry OS](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-astroberry-manager.yml/badge.svg)](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-astroberry-manager.yml)
 
