@@ -1,4 +1,4 @@
-name: Build StellarSolver
+name: StellarSolver
 
 on:
   workflow_dispatch:

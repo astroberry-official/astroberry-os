@@ -1,4 +1,4 @@
-name: Build PHD2 Log Viewer
+name: PHD2 Log Viewer
 
 on:
   workflow_dispatch:

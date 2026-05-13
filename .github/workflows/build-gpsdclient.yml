@@ -1,4 +1,4 @@
-name: Build GPSD Client
+name: GPSD Client
 
 on:
   workflow_dispatch:

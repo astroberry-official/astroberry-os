@@ -1,4 +1,4 @@
-name: Docker image builder
+name: Astroberry OS builder
 on:
   workflow_dispatch:
 

@@ -1,4 +1,4 @@
-name: Build GSC
+name: GSC
 
 on:
   workflow_dispatch:

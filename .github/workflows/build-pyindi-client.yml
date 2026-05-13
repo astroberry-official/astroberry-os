@@ -1,4 +1,4 @@
-name: Build PyIndi Client
+name: PyIndi Client
 
 on:
   workflow_dispatch:

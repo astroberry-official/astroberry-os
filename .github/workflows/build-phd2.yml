@@ -1,4 +1,4 @@
-name: Build PHD2
+name: PHD2
 
 on:
   workflow_dispatch:

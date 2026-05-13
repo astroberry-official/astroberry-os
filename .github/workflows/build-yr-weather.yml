@@ -1,4 +1,4 @@
-name: Build yr-weather
+name: yr-weather
 
 on:
   workflow_dispatch:

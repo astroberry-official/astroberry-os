@@ -1,4 +1,4 @@
-name: Build INDI Web Manager
+name: INDI Web Manager
 
 on:
   workflow_dispatch:
