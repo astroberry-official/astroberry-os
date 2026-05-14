@@ -96,6 +96,11 @@ Pin: origin astroberry.io
 Pin-Priority: 900
 EOF
 
+# Set wireless regulatory domain
+if [ -e $ROOTFS/boot/firmware/cmdline.txt ] && [ -z "$(grep cfg80211.ieee80211_regdom $ROOTFS/boot/firmware/cmdline.txt)" ]; then
+    sed -i -e "s/\s*cfg80211.ieee80211_regdom=\S*//" -e "s/\(.*\)/\1 cfg80211.ieee80211_regdom=GB/" $ROOTFS/boot/firmware/cmdline.txt
+fi
+
 # Add post-installation clean up script
 cat <<EOF > "$ROOTFS/tmp/astroberry-os-cleanup.sh"
 #!/bin/bash
