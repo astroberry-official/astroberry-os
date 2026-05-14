@@ -142,9 +142,15 @@ EOF
 chmod 755 "$ROOTFS/tmp/astroberry-os-cleanup.sh"
 
 # Install Astroberry OS meta package
-chroot "$ROOTFS" /bin/bash -c \
-  "export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get -o Dpkg::Options::=\"--force-overwrite\" install -yqq astroberry-os-desktop && /tmp/astroberry-os-cleanup.sh"
-
+chroot "$ROOTFS" /bin/bash -c "
+  export DEBIAN_FRONTEND=noninteractive &&
+  apt-get update &&
+  apt-get
+    -o Dpkg::Options::=\"--force-overwrite\"
+    -o Dpkg::Options::=\"--force-confdef\"
+    -o Dpkg::Options::=\"--force-confnew\"
+    install -yqq astroberry-os-desktop &&
+  /tmp/astroberry-os-cleanup.sh"
 
 # Unmount filesystems
 for dir in proc sys dev/pts dev; do
