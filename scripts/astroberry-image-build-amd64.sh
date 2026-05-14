@@ -90,6 +90,16 @@ cat <<EOF > $ROOTFS/tmp/astroberry-os-cleanup.sh
 
 export DEBIAN_FRONTEND=noninteractive
 
+# Clean AstroDMx installation files
+if [ -e /install.sh ]; then
+    rm -rf /install.sh
+fi
+
+# Hide AstroDMx from top level menu
+if [ -e /usr/share/desktop-directories/astrodmx.directory ]; then
+    echo "NoDisplay=true" >> /usr/share/desktop-directories/astrodmx.directory
+fi
+
 # Remove packages we don't need
 apt-get remove -y --purge modemmanager light-locker
 apt-get autoremove -y
