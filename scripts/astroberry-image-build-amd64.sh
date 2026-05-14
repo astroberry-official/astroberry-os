@@ -130,8 +130,9 @@ EOF
 chmod +x $ROOTFS/tmp/astroberry-os-cleanup.sh
 
 # Install Astroberry OS meta package
-chroot $ROOTFS /bin/bash -c \
-  "export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get -o Dpkg::Options::=\"--force-overwrite\" install -yqq astroberry-os-desktop && /tmp/astroberry-os-cleanup.sh"
+chroot "$ROOTFS" /bin/bash -c \
+  "export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get -o Dpkg::Options::='--force-overwrite' -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confnew' install -yq astroberry-os-desktop && /tmp/astroberry-os-cleanup.sh"
+
 
 # Copy the installer and icon files to the image
 cp $WDIR/astroberry-installer.sh $ROOTFS/opt/
