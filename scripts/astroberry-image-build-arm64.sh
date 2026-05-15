@@ -158,7 +158,7 @@ chmod 755 "$ROOTFS/tmp/astroberry-os-cleanup.sh"
 
 # Install Astroberry OS meta package
 chroot "$ROOTFS" /bin/bash -c \
-  "export DEBIAN_FRONTEND=noninteractive && apt-get update && install -yq astroberry-os-desktop && /tmp/astroberry-os-cleanup.sh"
+  "export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install -yq astroberry-os-desktop && /tmp/astroberry-os-cleanup.sh"
 
 # Unmount filesystems
 for dir in proc sys dev/pts dev; do
