@@ -1,16 +1,16 @@
-astroberry-os (3.2) main; urgency=medium
+astroberry-os (3.2) stable; urgency=medium
 
   * Astroberry OS 3.2
 
- -- Astroberry <contact@astroberry.io>  Mon, 11 May 2026 02:29:23 +0200
+ -- Astroberry <contact@astroberry.io>  Sun, 17 May 2026 12:01:23 +0200
 
-astroberry-os (3.1) main; urgency=medium
+astroberry-os (3.1) stable; urgency=medium
 
   * Astroberry OS 3.1
 
  -- Astroberry <contact@astroberry.io>  Sun, 05 Apr 2026 12:25:23 +0200
 
-astroberry-os (3.0) main; urgency=medium
+astroberry-os (3.0) stable; urgency=medium
 
   * Initial release of Astroberry OS
 
