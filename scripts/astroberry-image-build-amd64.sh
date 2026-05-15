@@ -145,8 +145,9 @@ EOF
 chmod +x $ROOTFS/tmp/astroberry-os-cleanup.sh
 
 # Install Astroberry OS meta package
-chroot "$ROOTFS" /bin/bash -c \
-  "export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install -yq astroberry-os-desktop && /tmp/astroberry-os-cleanup.sh"
+chroot $ROOTFS apt-get update
+chroot $ROOTFS apt-get install -y astroberry-os-desktop
+chroot $ROOTFS /tmp/astroberry-os-cleanup.sh
 
 # Copy the installer and icon files to the image
 cp $WDIR/astroberry-installer.sh $ROOTFS/opt/
