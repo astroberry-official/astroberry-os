@@ -10,7 +10,8 @@ WORKDIR /work
 # Core tools
 RUN apt-get update && apt-get -y upgrade && apt-get install -y \
     curl git cmake extra-cmake-modules build-essential \
-    cdbs debhelper pkg-kde-tools reprepro sshpass libusb-1.0-0-dev zlib1g-dev
+    cdbs debhelper pkg-kde-tools reprepro sshpass libusb-1.0-0-dev zlib1g-dev \
+    squashfs-tools
 
 # Add raspberry pi repository
 RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
