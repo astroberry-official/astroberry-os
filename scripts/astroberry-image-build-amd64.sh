@@ -150,12 +150,8 @@ chroot $ROOTFS apt-get install -y astroberry-os-desktop
 chroot $ROOTFS /tmp/astroberry-os-cleanup.sh
 
 # Copy the installer and icon files to the image
-cp $WDIR/astroberry-installer.sh $ROOTFS/opt/
-cp $WDIR/astroberry-installer.desktop $ROOTFS/usr/share/applications/
-
-# Copy the installer and icon files to the image
-cp $WDIR/astroberry-installer.sh $ROOTFS/opt/
-cp $WDIR/astroberry-installer.desktop $ROOTFS/usr/share/applications/
+cp $WDIR/iso-installer-amd64/astroberry-installer.sh $ROOTFS/opt/
+cp $WDIR/iso-installer-amd64/astroberry-installer.desktop $ROOTFS/usr/share/applications/
 
 # Change the default grub configuration for old nic names
 sed -i '/GRUB_CMDLINE_LINUX_DEFAULT/c\GRUB_CMDLINE_LINUX_DEFAULT="quiet net.ifnames=0 biosdevname=0"' $ROOTFS/etc/default/grub
