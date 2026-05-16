@@ -116,11 +116,11 @@ build-arm64() {
     wget -c "$IMAGE_URL/$IMAGE_FILE.xz.sha256"
     
     # Verify image SHA256 sum
-    if [ "OK" != "$(sha256sum -c $IMAGE_FILE.sha256 | awk -F: '{print $2}' | xargs)" ]; then
+    if [ "OK" != "$(sha256sum -c $IMAGE_FILE.xz.sha256 | awk -F: '{print $2}' | xargs)" ]; then
         echo "Raspberry Pi OS image SHA256 sum verification failed!"
         rm -f "$IMAGE_FILE.xz"
         rm -f "$IMAGE_FILE.xz.sha256"
-        exit 1
+        return 1
     fi
     
     # Decompress image
@@ -131,7 +131,7 @@ build-arm64() {
         echo "Failed to decompress Raspberry Pi OS image!"
         rm -f "$IMAGE_FILE.xz"
         rm -f "$IMAGE_FILE.xz.sha256"
-        exit 1
+        return 1
     fi
 
     # Grow image +7GB
@@ -209,6 +209,9 @@ build-amd64() {
 
     # Create the initial debootstrap for the astroberry OS image
     debootstrap --arch amd64 trixie $ROOTFS http://deb.debian.org/debian/
+
+    # Check debootstrap result
+    [ $? -ne 0 ] && return 1
 
     # Prepare chroot environment
     mount -t proc /proc $ROOTFS/proc
