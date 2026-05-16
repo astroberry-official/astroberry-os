@@ -1,0 +1,32 @@
+name: Astroberry OS Image
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: [self-hosted]
+
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ["3.2"]
+        distro: ["debian-trixie"]
+        architecture: ["arm64", "amd64"]
+
+    container:
+      image: ghcr.io/${{ github.repository }}/${{ matrix.distro }}-${{ matrix.architecture }}
+      volumes:
+        - /dev:/dev
+      options: --privileged
+
+    steps:
+      - name: Get sources
+        uses: actions/checkout@v6
+        with:
+          repository: astroberry-official/astroberry-os
+          path: astroberry-os
+
+      - name: Build image
+        run: |
+          astroberry-os/scripts/astroberry-image-build.sh ${{ matrix.version }} ${{ matrix.distro }} ${{ matrix.architecture }}
