@@ -170,10 +170,10 @@ build-arm64() {
 
     # Unmount filesystems
     for dir in proc sys dev/pts dev; do
-        [ mountpoint -q $ROOTFS/$dir ] && umount -l $ROOTFS/$dir
+        mountpoint -q $ROOTFS/$dir && umount -l $ROOTFS/$dir
     done
-    [ mountpoint -q $ROOTFS/boot/firmware ] && umount "$ROOTFS/boot/firmware"
-    [ mountpoint -q $ROOTFS ] && umount "$ROOTFS"
+    mountpoint -q $ROOTFS/boot/firmware && umount "$ROOTFS/boot/firmware"
+    mountpoint -q $ROOTFS && umount "$ROOTFS"
 
     # Check filesystem before shrinking
     e2fsck -fy "${LOOP_DEV}p2"
@@ -242,7 +242,7 @@ build-amd64() {
 
     # Unmount filesystems
     for dir in proc sys dev/pts dev; do
-        [ mountpoint -q $ROOTFS/$dir ] && umount -l $ROOTFS/$dir
+        mountpoint -q $ROOTFS/$dir && umount -l $ROOTFS/$dir
     done
 
     # Create the iso structure
@@ -327,11 +327,11 @@ EOF
 #############################################################################
 cleanup() {
     for dir in proc sys dev/pts dev; do
-        [ mountpoint -q $ROOTFS/$dir ] && umount -l $ROOTFS/$dir
+        mountpoint -q $ROOTFS/$dir && umount -l $ROOTFS/$dir
     done
 
-    [ mountpoint -q $ROOTFS/boot/firmware ] && umount $ROOTFS/boot/firmware
-    [ mountpoint -q $ROOTFS ] && umount $ROOTFS
+    mountpoint -q $ROOTFS/boot/firmware && umount $ROOTFS/boot/firmware
+    mountpoint -q $ROOTFS && umount $ROOTFS
     [ -n $LOOP_DEV ] && losetup -d $LOOP_DEV
     [ -d $ROOTFS ] && rm -rf $ROOTFS
 }
