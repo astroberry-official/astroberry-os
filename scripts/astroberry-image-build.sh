@@ -183,7 +183,7 @@ build-arm64() {
     sync
 
     # Detach loop device
-    losetup -d "$LOOP_DEV" && rm -rf $ROOTFS
+    losetup -d "$LOOP_DEV"
 
     # Shrink image
     [ -e "$OUTPUT_IMAGE.xz" ] && rm -rf "$OUTPUT_IMAGE.xz"
