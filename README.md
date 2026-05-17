@@ -1,9 +1,7 @@
 # Astroberry OS
 Astroberry OS is an operating system for Raspberry Pi for controlling astronomy equipment.
 
-[![Astroberry OS](https://github.com/astroberry-official/astroberry-os/actions/workflows/astroberry-os-image-arm64.yml/badge.svg)](https://github.com/astroberry-official/astroberry-os/actions/workflows/astroberry-os-image-arm64.yml)
-[![Astroberry OS](https://github.com/astroberry-official/astroberry-os/actions/workflows/astroberry-os-image-amd64.yml/badge.svg)](https://github.com/astroberry-official/astroberry-os/actions/workflows/astroberry-os-image-amd64.yml)
-
+[![Astroberry OS Image](https://github.com/astroberry-official/astroberry-os/actions/workflows/astroberry-os-image.yml/badge.svg?branch=main)](https://github.com/astroberry-official/astroberry-os/actions/workflows/astroberry-os-image.yml)
 [![Astroberry OS](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-astroberry-manager.yml/badge.svg)](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-astroberry-manager.yml)
 [![Astroberry OS](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-indi-core.yml/badge.svg)](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-indi-core.yml)
 [![Astroberry OS](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-indi-3rdparty-libs.yml/badge.svg)](https://github.com/astroberry-official/astroberry-os/actions/workflows/build-indi-3rdparty-libs.yml)
