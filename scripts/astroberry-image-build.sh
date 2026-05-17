@@ -56,8 +56,10 @@ if [ -e /usr/share/desktop-directories/astrodmx.directory ]; then
 fi
 
 # Fix Firecapture desktop file
-if [ ! -e "/usr/share/applications/firecapture.desktop" ] && [ -e "/usr/share/applications/FireCapture v2.7.desktop" ]; then
-    mv "/usr/share/applications/FireCapture v2.7.desktop" "/usr/share/applications/firecapture.desktop"
+if [ ! -e /usr/share/applications/firecapture.desktop ] && [ -e /usr/share/applications/FireCapture\ v2.7.desktop ]; then
+    mv /usr/share/applications/FireCapture\ v2.7.desktop /usr/share/applications/firecapture.desktop
+    sed -i "/Terminal=true/d" /usr/share/applications/firecapture.desktop
+    sed -i "s/Categories=.*/Categories=Astronomy;Science;/g" /usr/share/applications/firecapture.desktop
 fi
 
 ######################################################################
