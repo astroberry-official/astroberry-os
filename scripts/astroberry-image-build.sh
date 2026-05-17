@@ -114,7 +114,7 @@ build-arm64() {
     IMAGE_FILE="2025-12-04-raspios-trixie-arm64-lite.img"
     wget -c "$IMAGE_URL/$IMAGE_FILE.xz"
     wget -c "$IMAGE_URL/$IMAGE_FILE.xz.sha256"
-    
+
     # Verify image SHA256 sum
     if [ "OK" != "$(sha256sum -c $IMAGE_FILE.xz.sha256 | awk -F: '{print $2}' | xargs)" ]; then
         echo "Raspberry Pi OS image SHA256 sum verification failed!"
@@ -122,7 +122,7 @@ build-arm64() {
         rm -f "$IMAGE_FILE.xz.sha256"
         return 1
     fi
-    
+
     # Decompress image
     unxz "$IMAGE_FILE.xz" && mv "$IMAGE_FILE" "$OUTPUT_IMAGE"
 
@@ -226,7 +226,7 @@ build-amd64() {
     shim-signed grub-efi-amd64-signed grub-efi-amd64 grub-pc-bin \
     intel-microcode va-driver-all haveged zstd cloud-init sudo console-setup \
     live-boot live-config live-config-systemd zenity
-    
+
     # Install Astroberry OS
     install-astroberryos
 
