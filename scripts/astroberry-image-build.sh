@@ -172,8 +172,8 @@ build-arm64() {
     for dir in proc sys dev/pts dev; do
         mountpoint -q $ROOTFS/$dir && umount -l $ROOTFS/$dir
     done
-    mountpoint -q $ROOTFS/boot/firmware && umount "$ROOTFS/boot/firmware"
-    mountpoint -q $ROOTFS && umount "$ROOTFS"
+    mountpoint -q $ROOTFS/boot/firmware && umount $ROOTFS/boot/firmware
+    mountpoint -q $ROOTFS && umount $ROOTFS
 
     # Check filesystem before shrinking
     e2fsck -fy "${LOOP_DEV}p2"
@@ -326,13 +326,12 @@ EOF
 #      CLEANUP PROCEDURE
 #############################################################################
 cleanup() {
+    # Unmount filesystems
     for dir in proc sys dev/pts dev; do
         mountpoint -q $ROOTFS/$dir && umount -l $ROOTFS/$dir
     done
-
     mountpoint -q $ROOTFS/boot/firmware && umount $ROOTFS/boot/firmware
     mountpoint -q $ROOTFS && umount $ROOTFS
-    [ -n $LOOP_DEV ] && [ $(losetup -a | grep "$LOOP_DEV" | wc -l) -gt 0 ] && losetup -d $LOOP_DEV
     [ -d $ROOTFS ] && rm -rf $ROOTFS
 }
 trap cleanup EXIT
