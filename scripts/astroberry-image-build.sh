@@ -59,7 +59,7 @@ fi
 if [ ! -e /usr/share/applications/firecapture.desktop ] && [ -e /usr/share/applications/FireCapture\ v2.7.desktop ]; then
     mv /usr/share/applications/FireCapture\ v2.7.desktop /usr/share/applications/firecapture.desktop
     sed -i "/Terminal=true/d" /usr/share/applications/firecapture.desktop
-    sed -i "s/Categories=.*/Categories=Astronomy;Science;/g" /usr/share/applications/firecapture.desktop
+    sed -i "s/Categories=.*/Categories=Education;Science;Astronomy;/g" /usr/share/applications/firecapture.desktop
 fi
 
 ######################################################################
@@ -247,6 +247,9 @@ build-amd64() {
     # Copy the installer and icon files to the image
     cp $WDIR/iso-installer-amd64/astroberry-installer.sh $ROOTFS/usr/bin/
     cp $WDIR/iso-installer-amd64/astroberry-installer.desktop $ROOTFS/usr/share/applications/
+
+    # Replace dock launcher: RaspberryPi Control Centre -> Astroberry OS Installer
+    sed -i 's/rpcc.desktop/astroberry-installer.desktop/g' $ROOTFS/etc/xdg/xfce4/panel/default.xml
 
     # Synchronize filesystem
     sync
