@@ -9,15 +9,22 @@ WORKDIR /work
 
 # Core tools
 RUN apt-get update && apt-get -y upgrade && apt-get install -y \
-    curl git cmake extra-cmake-modules build-essential \
+    git cmake extra-cmake-modules build-essential \
     cdbs debhelper pkg-kde-tools reprepro sshpass libusb-1.0-0-dev zlib1g-dev \
-    squashfs-tools
+    curl wget gpg pigz gzip zstd tar xz-utils udev e2fsprogs parted
 
-# Add raspberry pi repository
+# Rasperry Pi platform
 RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
+    curl -L https://raw.githubusercontent.com/Drewsif/PiShrink/master/pishrink.sh | tee /usr/local/bin/pishrink.sh && chmod +x /usr/local/bin/pishrink.sh && \
     curl -L https://archive.raspberrypi.com/debian/raspberrypi.gpg.key | tee /etc/apt/trusted.gpg.d/raspi.asc && \
     echo "deb [trusted=yes] http://archive.raspberrypi.com/debian/ trixie main" > /etc/apt/sources.list.d/raspi.list && \
     apt-get update; \
+    fi
+
+# Amd64 platform
+RUN if [ "$TARGETPLATFORM" = "linux/amd64" ] || [ "$TARGETPLATFORM" = "linux/x86_64" ] || [ "$TARGETPLATFORM" = "linux/x64" ] || [ "$TARGETPLATFORM" = "linux/aarch64" ]; then \
+    apt-get -y install squashfs-tools xorriso debootstrap dosfstools \
+    grub-pc-bin grub-efi-amd64-bin shim-signed mtools libisoburn1 cpio; \
     fi
 
 # Core development packages
