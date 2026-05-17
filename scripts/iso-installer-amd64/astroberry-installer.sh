@@ -5,7 +5,7 @@
 # Invoke from the live ISO by running:
 #     sudo /usr/bin/astroberry-installer.sh
 
-set -e
+set -ex
 
 TITLE="Astroberry OS Installer"
 
@@ -16,15 +16,20 @@ DRIVES=( ${DRIVES[@]/#/"FALSE "} )
 TARGET_DRIVE=$(zenity --width 600 --height 400 --title="$TITLE" --text="Select destination disk :" --list --radiolist --column "Disk" --column="Device" --column="Model" --column "Size" "${DRIVES[@]}")
 
 if [ -z "$TARGET_DRIVE" ] || [ ! -e "$TARGET_DRIVE" ]; then
-    zenity --error --text="You have to select a disk for installation!"
+    zenity --error --width=450 --title="$TITLE" --text="You have to select a disk for installation!"
     exit 1
 fi
 
+# Check if target disk is partitioned
+if sudo parted "$TARGET_DRIVE" print 1 &> /dev/null; then
+    zenity --question --width=450 --title="$TITLE" --text="The target drive contains partitions. Are you sure you want to continue?" || exit 1
+fi
+
 DISK_SIZE=$(lsblk -dn -o SIZE "$TARGET_DRIVE")
-DISK_MODEL=$(cat "/sys/block/${TARGET_DRIVE#/dev/}/device/model" 2>/dev/null || echo "Virtual Disk")
+DISK_MODEL=$(cat "/sys/block/${TARGET_DRIVE#/dev/}/device/model" | xargs 2>/dev/null || echo "Virtual Disk")
 
 # 2. GUI Confirmation
-zenity --question --title="$TITLE" --width=450 \
+zenity --question --width=450 --title="$TITLE" \
 --text="<b>Installation Summary</b>\n\nTarget: $TARGET_DRIVE ($DISK_MODEL)\nSize: $DISK_SIZE\n\n<span foreground='red'><b>WARNING: This will wipe $TARGET_DRIVE.</b></span>\n\nProceed?" || exit 1
 
 # 3. Processing
@@ -33,6 +38,12 @@ echo "5" ; echo "# Partitioning disk $TARGET_DRIVE..."
 [[ $TARGET_DRIVE == *nvme* ]] && PART_EXT="p" || PART_EXT=""
 EFI_PART="${TARGET_DRIVE}${PART_EXT}1"
 ROOT_PART="${TARGET_DRIVE}${PART_EXT}2"
+
+# Make sure that target drive is not used
+if [ "$(findmnt -n -S $EFI_PART)" ] || [ "$(findmnt -n -S $ROOT_PART)" ]; then
+    zenity --error --width=450 --title="$TITLE" --text="The target drive is used! Unmount all of its partitions first."
+    exit 1
+fi
 
 # Partitioning
 sudo parted --script "$TARGET_DRIVE" mklabel gpt
@@ -95,16 +106,22 @@ echo "95" ; echo "# Finalizing..."
 if [ $BOOT_MODE == "uefi" ]; then
     sudo umount /mnt/target/sys/firmware/efi/efivars
 fi
-sudo umount /mnt/target/dev /mnt/target/proc /mnt/target/sys
-sudo umount /mnt/target/boot/efi
-sudo umount /mnt/target
 sudo sync
 
 echo "100" ; echo "# Done!"
-) | zenity --progress --title="$TITLE" --percentage=0 --auto-close --no-cancel
+) | zenity --progress --width=450 --title="$TITLE" --percentage=0 --auto-close --no-cancel
 
-if zenity --question --text="Installation successful! Reboot now?" ; then
-    reboot
+if [ $? -eq 0 ] ; then
+    if zenity --question --width=450 --title="$TITLE" --text="Installation successful! Reboot now?" ; then
+        sudo reboot
+    fi
+else
+    zenity --error --width=450 --title="$TITLE" --text="Installation failed!"
 fi
+
+# Unmounting target partitions
+sudo umount /mnt/target/dev /mnt/target/proc /mnt/target/sys
+sudo umount /mnt/target/boot/efi
+sudo umount /mnt/target
 
 exit 0
