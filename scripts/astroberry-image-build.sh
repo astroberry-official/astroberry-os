@@ -225,7 +225,7 @@ build-amd64() {
     chroot $ROOTFS apt-get install -y --no-install-recommends linux-image-generic firmware-linux-nonfree \
     shim-signed grub-efi-amd64-signed grub-efi-amd64 grub-pc-bin \
     intel-microcode va-driver-all haveged zstd cloud-init sudo console-setup \
-    live-boot live-config live-config-systemd zenity
+    live-boot live-config live-config-systemd rsync zenity
 
     # Install Astroberry OS
     install-astroberryos
