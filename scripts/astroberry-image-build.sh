@@ -43,6 +43,8 @@ EOF
 
 export DEBIAN_FRONTEND=noninteractive
 
+######################   Custom Fixes ###############################
+
 # Clean AstroDMx installation files
 if [ -e /install.sh ]; then
     rm -rf /install.sh
@@ -52,6 +54,13 @@ fi
 if [ -e /usr/share/desktop-directories/astrodmx.directory ]; then
     echo "NoDisplay=true" >> /usr/share/desktop-directories/astrodmx.directory
 fi
+
+# Fix Firecapture desktop file
+if [ ! -e "/usr/share/applications/firecapture.desktop" ] && [ -e "/usr/share/applications/FireCapture v2.7.desktop" ]; then
+    mv "/usr/share/applications/FireCapture v2.7.desktop" "/usr/share/applications/firecapture.desktop"
+fi
+
+######################################################################
 
 # Remove packages we don't need
 apt-get remove -y --purge modemmanager light-locker
