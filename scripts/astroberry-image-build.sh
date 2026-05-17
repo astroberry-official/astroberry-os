@@ -183,7 +183,7 @@ build-arm64() {
     sync
 
     # Detach loop device
-    losetup -d "$LOOP_DEV"
+    losetup -d "$LOOP_DEV" && rm -rf $ROOTFS
 
     # Shrink image
     [ -e "$OUTPUT_IMAGE.xz" ] && rm -rf "$OUTPUT_IMAGE.xz"
@@ -332,7 +332,7 @@ cleanup() {
 
     mountpoint -q $ROOTFS/boot/firmware && umount $ROOTFS/boot/firmware
     mountpoint -q $ROOTFS && umount $ROOTFS
-    [ -n $LOOP_DEV ] && losetup -d $LOOP_DEV
+    [ -n $LOOP_DEV ] && [ $(losetup -a | grep "$LOOP_DEV" | wc -l) -gt 0 ] && losetup -d $LOOP_DEV
     [ -d $ROOTFS ] && rm -rf $ROOTFS
 }
 trap cleanup EXIT

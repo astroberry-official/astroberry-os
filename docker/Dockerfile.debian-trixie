@@ -22,7 +22,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
     fi
 
 # Amd64 platform
-RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
+RUN if [ "$TARGETPLATFORM" = "linux/amd64" ] || [ "$TARGETPLATFORM" = "linux/x86_64" ] || [ "$TARGETPLATFORM" = "linux/x64" ] || [ "$TARGETPLATFORM" = "linux/aarch64" ]; then \
     apt-get -y install squashfs-tools xorriso debootstrap dosfstools \
     grub-pc-bin grub-efi-amd64-bin shim-signed mtools libisoburn1 cpio; \
     fi
