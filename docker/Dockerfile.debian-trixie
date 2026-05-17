@@ -11,7 +11,7 @@ WORKDIR /work
 RUN apt-get update && apt-get -y upgrade && apt-get install -y \
     git cmake extra-cmake-modules build-essential \
     cdbs debhelper pkg-kde-tools reprepro sshpass libusb-1.0-0-dev zlib1g-dev \
-    curl wget gpg pigz gzip xz-utils udev e2fsprogs parted
+    curl wget gpg pigz gzip zstd tar xz-utils udev e2fsprogs parted
 
 # Rasperry Pi platform
 RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
