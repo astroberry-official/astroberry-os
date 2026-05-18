@@ -1,4 +1,4 @@
-name: KStars
+name: kstars
 
 on:
   workflow_dispatch:

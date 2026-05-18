@@ -1,4 +1,4 @@
-name: GSC
+name: gsc
 
 on:
   workflow_dispatch:

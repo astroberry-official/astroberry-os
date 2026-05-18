@@ -1,4 +1,4 @@
-name: PHD2
+name: phd2
 
 on:
   workflow_dispatch:

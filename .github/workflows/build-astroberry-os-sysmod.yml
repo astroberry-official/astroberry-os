@@ -1,4 +1,4 @@
-name: Astroberry OS sysmod
+name: astroberry-os-sysmod
 
 on:
   workflow_dispatch:

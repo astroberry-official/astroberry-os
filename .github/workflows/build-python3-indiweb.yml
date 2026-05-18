@@ -1,4 +1,4 @@
-name: GPSD Client
+name: python3-indiweb
 
 on:
   workflow_dispatch:
@@ -22,16 +22,16 @@ jobs:
         run: |
           apt-get update && apt-get install -y python3 dh-python python3-setuptools pybuild-plugin-pyproject python3-pytest
 
-      - name: Get the sources of GPSD Client
+      - name: Get the sources of INDI Web Manager
         uses: actions/checkout@v6
         with:
-          repository: 'rkaczorek/gpsdclient'
+          repository: 'rkaczorek/indiwebmanager'
           ref: astroberry
-          path: 'gpsdclient'
+          path: 'indiwebmanager'
 
-      - name: Build GPSD Client
+      - name: Build INDI Web Manager
         run: |
-          rm -rf build/deb_gpsdclient && mkdir -p build/deb_gpsdclient && \
-          cp -r gpsdclient/* build/deb_gpsdclient/ && \
-          cd build/deb_gpsdclient && \
+          rm -rf build/deb_indiwebmanager && mkdir -p build/deb_indiwebmanager && \
+          cp -r indiwebmanager/* build/deb_indiwebmanager/ && \
+          cd build/deb_indiwebmanager && \
           fakeroot debian/rules binary
