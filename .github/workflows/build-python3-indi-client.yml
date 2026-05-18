@@ -1,4 +1,4 @@
-name: PyIndi Client
+name: python3-indi-client
 
 on:
   workflow_dispatch:

@@ -1,4 +1,4 @@
-name: PHD2 Log Viewer
+name: phdlogview
 
 on:
   workflow_dispatch:

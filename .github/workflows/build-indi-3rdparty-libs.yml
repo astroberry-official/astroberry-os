@@ -1,4 +1,4 @@
-name: INDI Libraries
+name: indi-3rdparty-libs
 
 on:
   workflow_dispatch:

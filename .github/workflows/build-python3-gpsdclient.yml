@@ -1,4 +1,4 @@
-name: yr-weather
+name: python3-gpsdclient
 
 on:
   workflow_dispatch:
@@ -22,16 +22,16 @@ jobs:
         run: |
           apt-get update && apt-get install -y python3 dh-python python3-setuptools pybuild-plugin-pyproject python3-pytest
 
-      - name: Get the sources of yr-weather
+      - name: Get the sources of GPSD Client
         uses: actions/checkout@v6
         with:
-          repository: 'rkaczorek/yr-weather'
+          repository: 'rkaczorek/gpsdclient'
           ref: astroberry
-          path: 'yr-weather'
+          path: 'gpsdclient'
 
-      - name: Build yr-weather
+      - name: Build GPSD Client
         run: |
-          rm -rf build/deb_yr-weather && mkdir -p build/deb_yr-weather && \
-          cp -r yr-weather/* build/deb_yr-weather/ && \
-          cd build/deb_yr-weather && \
+          rm -rf build/deb_gpsdclient && mkdir -p build/deb_gpsdclient && \
+          cp -r gpsdclient/* build/deb_gpsdclient/ && \
+          cd build/deb_gpsdclient && \
           fakeroot debian/rules binary

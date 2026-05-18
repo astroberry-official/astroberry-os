@@ -1,4 +1,4 @@
-name: Astroberry Manager
+name: astroberry-manager
 
 on:
   workflow_dispatch:

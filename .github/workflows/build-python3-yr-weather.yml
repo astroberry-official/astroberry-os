@@ -1,4 +1,4 @@
-name: INDI Web Manager
+name: python3-yr-weather
 
 on:
   workflow_dispatch:
@@ -22,16 +22,16 @@ jobs:
         run: |
           apt-get update && apt-get install -y python3 dh-python python3-setuptools pybuild-plugin-pyproject python3-pytest
 
-      - name: Get the sources of INDI Web Manager
+      - name: Get the sources of yr-weather
         uses: actions/checkout@v6
         with:
-          repository: 'rkaczorek/indiwebmanager'
+          repository: 'rkaczorek/yr-weather'
           ref: astroberry
-          path: 'indiwebmanager'
+          path: 'yr-weather'
 
-      - name: Build INDI Web Manager
+      - name: Build yr-weather
         run: |
-          rm -rf build/deb_indiwebmanager && mkdir -p build/deb_indiwebmanager && \
-          cp -r indiwebmanager/* build/deb_indiwebmanager/ && \
-          cd build/deb_indiwebmanager && \
+          rm -rf build/deb_yr-weather && mkdir -p build/deb_yr-weather && \
+          cp -r yr-weather/* build/deb_yr-weather/ && \
+          cd build/deb_yr-weather && \
           fakeroot debian/rules binary

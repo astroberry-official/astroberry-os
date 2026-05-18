@@ -1,4 +1,4 @@
-name: INDI Drivers
+name: indi-3rdparty-drivers
 
 on:
   workflow_dispatch:
