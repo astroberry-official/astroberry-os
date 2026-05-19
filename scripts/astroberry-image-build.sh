@@ -51,10 +51,11 @@ if [ -e /install.sh ]; then
     rm -rf /install.sh
 fi
 
-# Hide AstroDMx from top level menu
-if [ -e /usr/share/desktop-directories/astrodmx.directory ]; then
-    echo "NoDisplay=true" >> /usr/share/desktop-directories/astrodmx.directory
-fi
+# Remove AstroDMx from top level menu
+[ -e /usr/share/desktop-directories/astrodmx.directory ] && rm -rf /usr/share/desktop-directories/astrodmx.directory
+
+# Fix AstroDMx desktop file
+[ -e /usr/share/applications/astrodmx_capture.desktop ] && sed -i "s/Categories=.*/Categories=Education;Science;Astronomy;/g" /usr/share/applications/astrodmx_capture.desktop
 
 # Fix Firecapture desktop file
 if [ ! -e /usr/share/applications/firecapture.desktop ] && [ -e /usr/share/applications/FireCapture\ v2.7.desktop ]; then
