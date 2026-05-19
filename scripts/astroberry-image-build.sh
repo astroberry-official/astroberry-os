@@ -2,7 +2,7 @@
 #
 # astroberry-image-build.sh
 # Generate Astroberry OS image for a given architecture and distribution
-# Invoked by: .github/workflows/astroberry-os-image.yml
+# Invoked by: .github/workflows/astroberry-os-release.yml
 #
 
 set -e
