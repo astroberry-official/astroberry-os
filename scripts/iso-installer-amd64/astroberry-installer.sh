@@ -26,11 +26,11 @@ if sudo parted "$TARGET_DRIVE" print 1 &> /dev/null; then
 fi
 
 DISK_SIZE=$(lsblk -dn -o SIZE "$TARGET_DRIVE")
-DISK_MODEL=$(cat "/sys/block/${TARGET_DRIVE#/dev/}/device/model" | xargs 2>/dev/null || echo "Virtual Disk")
+DISK_MODEL=$(cat "/sys/block/${TARGET_DRIVE#/dev/}/device/model" 2>/dev/null || echo "Virtual Disk")
 
 # 2. GUI Confirmation
 zenity --question --width=450 --title="$TITLE" \
---text="<b>Installation Summary</b>\n\nTarget: $TARGET_DRIVE ($DISK_MODEL)\nSize: $DISK_SIZE\n\n<span foreground='red'><b>WARNING: This will wipe $TARGET_DRIVE.</b></span>\n\nProceed?" || exit 1
+--text="<b>Installation Summary</b>\n\nTarget: $TARGET_DRIVE - $DISK_MODEL\nSize: $DISK_SIZE\n\n<span foreground='red'><b>WARNING: This will wipe $TARGET_DRIVE.</b></span>\n\nProceed?" || exit 1
 
 # 3. Processing
 (
