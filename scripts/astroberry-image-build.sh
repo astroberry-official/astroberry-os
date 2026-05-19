@@ -2,7 +2,7 @@
 #
 # astroberry-image-build.sh
 # Generate Astroberry OS image for a given architecture and distribution
-# Invoked by: .github/workflows/astroberry-os-image.yml
+# Invoked by: .github/workflows/astroberry-os-release.yml
 #
 
 set -e
@@ -21,6 +21,7 @@ install-astroberryos() {
 Types: deb
 URIs: https://astroberry.io/debian/
 Suites: trixie
+Architectures: arm64 amd64
 Components: main
 Signed-By: /etc/apt/keyrings/astroberry.gpg
 EOF
@@ -50,10 +51,11 @@ if [ -e /install.sh ]; then
     rm -rf /install.sh
 fi
 
-# Hide AstroDMx from top level menu
-if [ -e /usr/share/desktop-directories/astrodmx.directory ]; then
-    echo "NoDisplay=true" >> /usr/share/desktop-directories/astrodmx.directory
-fi
+# Remove AstroDMx from top level menu
+[ -e /usr/share/desktop-directories/astrodmx.directory ] && rm -rf /usr/share/desktop-directories/astrodmx.directory
+
+# Fix AstroDMx desktop file
+[ -e /usr/share/applications/astrodmx_capture.desktop ] && sed -i "s/Categories=.*/Categories=Education;Science;Astronomy;/g" /usr/share/applications/astrodmx_capture.desktop
 
 # Fix Firecapture desktop file
 if [ ! -e /usr/share/applications/firecapture.desktop ] && [ -e /usr/share/applications/FireCapture\ v2.7.desktop ]; then
