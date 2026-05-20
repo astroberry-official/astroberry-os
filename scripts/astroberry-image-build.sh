@@ -26,6 +26,16 @@ Components: main restricted
 Signed-By: /etc/apt/keyrings/astroberry.gpg
 EOF
 
+    # Add Astroberry OS testing repository
+    cat <<EOF > $ROOTFS/etc/apt/sources.list.d/astroberry-testing.sources
+Types: deb
+URIs: https://astroberry.io/debian/
+Suites: trixie-testing
+Architectures: arm64 amd64
+Components: main restricted
+Signed-By: /etc/apt/keyrings/astroberry.gpg
+EOF
+
     # Give priority to Astroberry OS repository
     cat <<EOF > $ROOTFS/etc/apt/preferences.d/astroberry-pin
 Package: *
