@@ -291,7 +291,7 @@ insmod all_video
 
 menuentry "Astroberry OS Live (64-bit)" {
     search --set=root --file /live/filesystem.squashfs
-    linux /live/vmlinuz boot=live components quiet splash noeject noautologin net.ifnames=0 biosdevname=0
+    linux /live/vmlinuz boot=live components quiet noeject username=astroberry net.ifnames=0 biosdevname=0
     initrd /live/initrd
 }
 EOF
