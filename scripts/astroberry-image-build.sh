@@ -22,7 +22,7 @@ Types: deb
 URIs: https://astroberry.io/debian/
 Suites: trixie
 Architectures: arm64 amd64
-Components: main
+Components: main restricted
 Signed-By: /etc/apt/keyrings/astroberry.gpg
 EOF
 
