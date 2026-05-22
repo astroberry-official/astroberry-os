@@ -1,0 +1,36 @@
+name: indi-astroberry-diy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: [self-hosted, "${{ matrix.architecture }}"]
+
+    strategy:
+      fail-fast: false
+      matrix:
+        distro: ["debian-trixie"]
+        architecture: ["arm64"]
+
+    container:
+      image: ghcr.io/${{ github.repository }}/${{ matrix.distro }}-${{ matrix.architecture }}
+
+    steps:
+      - name: Get Sources of astroberry-diy
+        uses: actions/checkout@v6
+        with:
+          repository: 'rkaczorek/astroberry-diy'
+          ref: 'master'
+          path: 'astroberry-diy'
+
+      - name: Install Dependencies of astroberry-diy
+        run: |
+          dpkg -i build/indi-bin_*_${{ matrix.architecture }}.deb build/libindi1_*_${{ matrix.architecture }}.deb build/libindi-data_*_all.deb build/libindi-dev_*_${{ matrix.architecture }}.deb
+
+      - name: Build astroberry-diy package
+        run: |
+          rm -rf build/deb_astroberry-diy && mkdir -p build/deb_astroberry-diy && \
+          cp -r astroberry-diy/* build/deb_astroberry-diy/ && \
+          cd build/deb_astroberry-diy && \
+          fakeroot debian/rules binary
