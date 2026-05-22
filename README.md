@@ -58,7 +58,20 @@ Astroberry OS **Desktop**
 
 ### Quick install
 The easiest way to install Astroberry OS is to [download a binary system image](https://www.astroberry.io/download), flash a new microSD card and boot Raspberry Pi with it.
-Alternatively you can manually install debian packages from Astroberry OS APT repository. Execute the folowing commands on your Raspberry Pi, running official Raspberry Pi OS.
+
+Alternatively you can manually install debian packages from Astroberry OS APT repository. Run these commands only if you are running Raspberry Pi OS (64-bit) or Debian Trixie (64-bit).
+
+### Manual install
+
+**One-command installation**
+
+```
+curl -fsSL https://astroberry.io/debian/install.sh | bash
+```
+
+**Three-command installation**
+
+1. Add Astroberry OS certificate and repository:
 
 ```
 # Add Astroberry OS certificate
@@ -70,9 +83,9 @@ curl -fsSL https://astroberry.io/debian/astroberry.sources \
     | sudo tee /etc/apt/sources.list.d/astroberry.sources
 ```
 
-**Important note**
-Astroberry OS APT repository provides the latest versions of some packages, which older versions are also available in Debian and Raspberry OS repositories.
-You need to set higher priority to Astroberry OS APT repository to avoid packages installation issues. To set higher priority to the repository run the following command:
+2. Set higher priority to Astroberry OS APT repository:
+
+Astroberry OS APT repository provides the latest versions of some packages, which older versions are also available in Debian and Raspberry OS repositories. To avoid packages installation issues you need to set higher priority to Astroberry OS APT repository. To set higher priority to the repository run the following command:
 
 ```
 cat <<EOF > /etc/apt/preferences.d/astroberry-pin
@@ -82,10 +95,9 @@ Pin-Priority: 900
 EOF
 ```
 
-Finally you can install Astroberry OS.
+3. Install Astroberry OS:
 
 ```
-# Install Astroberry OS
 sudo apt update && sudo apt install astroberry-os-desktop
 ```
 Visit [www.astroberry.io](https://www.astroberry.io/install) for detailed installation instructions.
