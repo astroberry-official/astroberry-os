@@ -23,54 +23,36 @@ This library provides comprehensive set of tools for automated building of Astro
 Is uses self-hosted actions runner to execute GitHub workflows to:
 - build dockerized system builder
 - build debian packages provided by Astroberry OS
-- maintain online Astroberry OS software repository
 - build system image file
 
-## Install build environment
-Astroberry OS and software packages are built using preconfigured build environment. Run `scripts/raspberrypi-setup.sh` 
-on your Raspberry Pi to prepare it for installation of GitHub self-hosted actions runner.
+See [ARCHITECTURE](docs/ARCHITECTURE.md) for details.
 
-Add and configure a self-hosted actions runner in [Project Settings](https://github.com/astroberry-official/astroberry-os/settings/actions/runners).
-While configuring a new actions runner, you will be given a set of commands to run on your Raspberry Pi.
-Run these commands on your Raspberry Pi to install actions runner. When finished, run actions runner with `actions-runner/run.sh`
+## Astroberry OS flavours and ingredients
+Two flavors of Astroberry OS are available for installation: **astroberry-os-lite** and **astroberry-os-desktop**
 
-## Build Astroberry OS
-Debian packages are compiled and built using [GitHub Actions](https://github.com/astroberry-official/astroberry-os/actions)
-The following workflows are used to compile and build debian packages of software provided by Astroberry OS APT repository.
-Make sure that your self-hosted actions runner is started before running any workflow.
+Astroberry OS **Lite**
+- Built on top of official Raspberry Pi OS
+- Support for 64bit Raspberry Pi 4 & 5
+- Wireless Hotspot for accessing the system in the field
+- INDI framework with official device drivers
+- Guide Star Catalog (GSC) for simulating star fields
+- Astrometry for field solving
+- New generation web-based Astroberry Manager
 
-- **Astroberry OS builder** ⚙️ builds a docker image with preconfigured building environment.
-  It runs automaticaly whenever you compile and build a debian package. If you need to start it manually, run `scripts/astroberry-docker-run.sh`.
-
-
-- **Astroberry OS [arm64|amd64]** 💾 build Astroberry OS system image. ⭐ Starting from v3.2 amd64 architecture is supported.
-
-
-- **Astroberry OS meta-package** 📦 build astroberry-os-[lite|desktop|full] meta-packages that install required packages.
-
-
-- **Astroberry OS sysmod** 📦 build astroberry-os-sysmod that provides custom mods to the original Raspberry Pi OS.
-
-
-- **Software packages** 📦 (recommended order of running)
-
-  ✔️ **Build GSC** - compile and package Guide Star Catalog (GSC) of stars.
-
-  ✔️ **Build INDI Core** - compile and package core INDI packages. Virtually all other packages depend on it.
-
-  ✔️ **Build INDI 3rd Party Libraries** - compile and package INDI 3rd party libraries.
-
-  ✔️ **Build INDI 3rd Party Drivers** - compile and package INDI 3rd party drivers.
-
-  ✔️ **Build StellarSolver** - compile and package StellarSolver. Required by KStars.
-
-  ✔️ **Build KStars** - compile and package KStars.
-
-  ✔️ **Build PHD2** - compile and package PHD2.
-
-  ✔️ **Build PHD2 Log Viewer** - compile and package PHD2 Log Viewer.
-
-  ✔️ **Build Astroberry Manager** - compile Astroberry Wanager - web frontend for Astroberry OS.
+Astroberry OS **Desktop**
+- All features from astroberry-os-lite
+- XFCE Desktop Environment accessible with a web browser
+- KStars planetarium software
+- PHD2 for autoguiding
+- PHD Log Viewer for inspecting guiding performance
+- StellarSolver for field solving
+- ASTAP for field solving
+- Gnome Predict for satellite tracking
+- FireCapture for planetary imaging
+- SER Player for viewing captured planetary video
+- AstroDMX capture software
+- CCDciel capture software
+- Siril for DSO image processing
 
 ## Install Astroberry OS 🏃
 
@@ -107,30 +89,3 @@ Finally you can install Astroberry OS.
 sudo apt update && sudo apt install astroberry-os-desktop
 ```
 Visit [www.astroberry.io](https://www.astroberry.io/install) for detailed installation instructions.
-
-### Astroberry OS flavours and ingredients
-Two flavors of Astroberry OS are available for installation: **astroberry-os-lite** and **astroberry-os-desktop**
-
-Astroberry OS **Lite**
-- Built on top of official Raspberry Pi OS
-- Support for 64bit Raspberry Pi 4 & 5
-- Wireless Hotspot for accessing the system in the field
-- INDI framework with official device drivers
-- Guide Star Catalog (GSC) for simulating star fields
-- Astrometry for field solving
-- New generation web-based Astroberry Manager
-
-Astroberry OS **Desktop**
-- All features from astroberry-os-lite
-- XFCE Desktop Environment accessible with a web browser
-- KStars planetarium software
-- PHD2 for autoguiding
-- PHD Log Viewer for inspecting guiding performance
-- StellarSolver for field solving
-- ASTAP for field solving
-- Gnome Predict for satellite tracking
-- FireCapture for planetary imaging
-- SER Player for viewing captured planetary video
-- AstroDMX capture software
-- CCDciel capture software
-- Siril for DSO image processing
