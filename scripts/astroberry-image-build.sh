@@ -243,8 +243,11 @@ build-amd64() {
     # Install Astroberry OS
     install-astroberryos
 
+    # Set default boot animation / splash
+    chroot $ROOTFS plymouth-set-default-theme -R text || true
+
     # Change the default grub configuration for old nic names
-    sed -i '/GRUB_CMDLINE_LINUX_DEFAULT/c\GRUB_CMDLINE_LINUX_DEFAULT="quiet net.ifnames=0 biosdevname=0"' $ROOTFS/etc/default/grub
+    sed -i '/GRUB_CMDLINE_LINUX_DEFAULT/c\GRUB_CMDLINE_LINUX_DEFAULT="quiet splash net.ifnames=0 biosdevname=0"' $ROOTFS/etc/default/grub
 
     # Copy the installer and icon files to the image
     cp $WDIR/iso-installer-amd64/astroberry-installer.sh $ROOTFS/usr/bin/
@@ -263,8 +266,10 @@ build-amd64() {
 
     # Create the iso structure
     [ -e iso ] && rm -rf iso
-    mkdir -p iso/EFI/BOOT
+    mkdir -p iso/EFI/boot
     mkdir -p iso/boot/grub/i386-pc
+    mkdir -p iso/boot/grub/x86_64-efi
+    mkdir -p iso/boot/grub/fonts
     mkdir -p iso/live
 
     # Create the squashfs image with xz compression
@@ -277,44 +282,51 @@ build-amd64() {
     cp -v $INITRD iso/live/initrd
 
     # Copy the shim and grub bootloader to the iso
-    cp $ROOTFS/usr/lib/shim/shimx64.efi.signed iso/EFI/BOOT/BOOTX64.EFI
-    cp $ROOTFS/usr/lib/grub/x86_64-efi-signed/grubx64.efi.signed iso/EFI/BOOT/grubx64.efi
+    cp $ROOTFS/usr/lib/shim/shimx64.efi.signed iso/EFI/boot/bootx64.efi
+    cp $ROOTFS/usr/lib/grub/x86_64-efi-signed/gcdx64.efi.signed iso/EFI/boot/grubx64.efi
+
+    # Copy font for grub legacy boot
+    cp $ROOTFS/boot/grub/unicode.pf2 iso/boot/grub/fonts/
+
+    # Add grub background
+    cp $ROOTFS/usr/share/astroberry-artwork/grub/milkyway-galaxy-center-and-its-companions_1920x1080.png iso/boot/grub/splash.png
 
     # Create the grub configuration for the iso
-    cat << EOF > iso/EFI/BOOT/grub.cfg
-set default="0"
+    cat << EOF > iso/boot/grub/grub.cfg
+set default=0
 set timeout=5
 
-insmod part_gpt
-insmod part_msdos
-insmod all_video
+loadfont unicode
+terminal_output gfxterm
+insmod png
+background_image /boot/grub/splash.png
 
 menuentry "Astroberry OS Live (64-bit)" {
     search --set=root --file /live/filesystem.squashfs
-    linux /live/vmlinuz boot=live components quiet noeject username=astroberry net.ifnames=0 biosdevname=0
+    linux /live/vmlinuz boot=live components quiet splash noeject username=astroberry net.ifnames=0 biosdevname=0
     initrd /live/initrd
 }
 EOF
 
     # Create the EFI boot image
-    truncate -s 10M efiboot.img
-    mkfs.vfat efiboot.img
-    mmd -i efiboot.img ::/EFI ::/EFI/BOOT
-    mcopy -i efiboot.img iso/EFI/BOOT/BOOTX64.EFI ::/EFI/BOOT/
-    mcopy -i efiboot.img iso/EFI/BOOT/grubx64.efi ::/EFI/BOOT/
+    truncate -s 10M iso/boot/grub/efi.img
+    mkfs.vfat iso/boot/grub/efi.img
+    mmd -i iso/boot/grub/efi.img ::/EFI ::/EFI/boot
+    mcopy -i iso/boot/grub/efi.img iso/EFI/boot/bootx64.efi ::/EFI/boot/
+    mcopy -i iso/boot/grub/efi.img iso/EFI/boot/grubx64.efi ::/EFI/boot/
 
     # Create the el-torito image for legacy BIOS booting
     grub-mkimage -O i386-pc-eltorito \
         -o iso/boot/grub/i386-pc/eltorito.img \
         -p /boot/grub \
-        biosdisk iso9660 search test ls normal cat echo halt reboot
+        biosdisk iso9660 search test ls normal cat echo halt reboot linux gfxterm_background png
 
     # Create the final ISO image
     xorriso -as mkisofs \
         -iso-level 3 -rock -joliet \
-        -volid "ASTROBERRY" \
+        -volid "ASTROBERRY_OS" \
         -partition_offset 16 \
-        -append_partition 2 0xef efiboot.img \
+        -append_partition 2 0xef iso/boot/grub/efi.img \
         -appended_part_as_gpt \
         -c boot.catalog \
         -b boot/grub/i386-pc/eltorito.img \
@@ -335,7 +347,7 @@ EOF
     sha256sum -c $OUTPUT_IMAGE.sha256
 
     # Cleanup
-    rm -rf iso efiboot.img
+    rm -rf iso
 }
 
 #############################################################################
