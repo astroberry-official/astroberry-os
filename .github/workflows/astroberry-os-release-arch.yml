@@ -1,0 +1,35 @@
+name: astroberry-os-release-arch
+
+on:
+  workflow_call:
+    inputs:
+      architecture:
+        required: true
+        type: string
+
+jobs:
+  build:
+    runs-on: [self-hosted, "${{ inputs.architecture }}"]
+
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ["3.2"]
+        distro: ["debian-trixie"]
+
+    container:
+      image: ghcr.io/${{ github.repository }}/${{ matrix.distro }}-${{ inputs.architecture }}
+      volumes:
+        - /dev:/dev
+      options: --privileged
+
+    steps:
+      - name: Get sources
+        uses: actions/checkout@v6
+        with:
+          repository: astroberry-official/astroberry-os
+          path: astroberry-os
+
+      - name: Build image
+        run: |
+          astroberry-os/scripts/astroberry-image-build.sh ${{ matrix.version }} ${{ matrix.distro }} ${{ inputs.architecture }}
