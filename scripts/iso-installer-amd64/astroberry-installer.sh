@@ -20,32 +20,35 @@ if [ -z "$TARGET_DRIVE" ] || [ ! -e "$TARGET_DRIVE" ]; then
     exit 1
 fi
 
+# Get disk info
+DISK_SIZE=$(lsblk -dn -o SIZE "$TARGET_DRIVE")
+DISK_MODEL=$(cat "/sys/block/${TARGET_DRIVE#/dev/}/device/model" 2>/dev/null || echo "Virtual Disk")
+
 # Check if target disk is partitioned
 if sudo parted "$TARGET_DRIVE" print 1 &> /dev/null; then
     zenity --question --width=450 --title="$TITLE" --text="The target drive contains partitions. Are you sure you want to continue?" || exit 1
 fi
 
-DISK_SIZE=$(lsblk -dn -o SIZE "$TARGET_DRIVE")
-DISK_MODEL=$(cat "/sys/block/${TARGET_DRIVE#/dev/}/device/model" 2>/dev/null || echo "Virtual Disk")
+# Check if partitions are mounted
+if mount | grep -q "$TARGET_DRIVE"; then
+    zenity --error --width=450 --title="$TITLE" --text="The target drive is used! Unmount all of its partitions first."
+    exit 1
+fi
 
 # 2. GUI Confirmation
 zenity --question --width=450 --title="$TITLE" \
 --text="<b>Installation Summary</b>\n\nTarget: $TARGET_DRIVE - $DISK_MODEL\nSize: $DISK_SIZE\n\n<span foreground='red'><b>WARNING: This will wipe $TARGET_DRIVE.</b></span>\n\nProceed?" || exit 1
 
-# 3. Processing
-(
-echo "5" ; echo "# Partitioning disk $TARGET_DRIVE..."
+# Set target drive partitions
 [[ $TARGET_DRIVE == *nvme* ]] && PART_EXT="p" || PART_EXT=""
 EFI_PART="${TARGET_DRIVE}${PART_EXT}1"
 ROOT_PART="${TARGET_DRIVE}${PART_EXT}2"
 
-# Make sure that target drive is not used
-if [ "$(findmnt -n -S $EFI_PART)" ] || [ "$(findmnt -n -S $ROOT_PART)" ]; then
-    zenity --error --width=450 --title="$TITLE" --text="The target drive is used! Unmount all of its partitions first."
-    exit 1
-fi
+# 3. Processing
+(
 
 # Partitioning
+echo "5" ; echo "# Partitioning disk $TARGET_DRIVE..."
 sudo parted --script "$TARGET_DRIVE" mklabel gpt
 sudo parted --script "$TARGET_DRIVE" mkpart primary fat32 1MiB 513MiB
 sudo parted --script "$TARGET_DRIVE" set 1 esp on
