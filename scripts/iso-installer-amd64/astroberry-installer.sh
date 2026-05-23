@@ -109,6 +109,12 @@ echo "95" ; echo "# Finalizing..."
 if [ $BOOT_MODE == "uefi" ]; then
     sudo umount /mnt/target/sys/firmware/efi/efivars
 fi
+
+# Disable autologin
+sudo sed -i 's/^autologin-user=.*/\#autologin-user=/' /mnt/target/etc/lightdm/lightdm.conf
+sudo sed -i 's/^autologin-user-timeout=.*/\#autologin-user-timeout=0/' /mnt/target/etc/lightdm/lightdm.conf
+
+# Sync drive to make sure all data is written to disk
 sudo sync
 
 echo "100" ; echo "# Done!"
