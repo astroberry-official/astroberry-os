@@ -1,0 +1,10 @@
+name: astroberry-os-release-amd64
+
+on:
+  workflow_dispatch:
+
+jobs:
+  astroberry-os-release-amd64:
+    uses: ./.github/workflows/astroberry-os-release-arch.yml
+    with:
+      architecture: amd64
