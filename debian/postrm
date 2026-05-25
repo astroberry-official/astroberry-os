@@ -1,0 +1,6 @@
+#!/bin/bash
+# postrm script for astroberry-os
+
+# Remove Astroberry version file
+[ -f /etc/astroberry/version ] && rm -f /etc/astroberry/version
+
