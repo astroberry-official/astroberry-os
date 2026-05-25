@@ -9,8 +9,9 @@ Homepage: https://www.astroberry.io/
 Package: astroberry-os
 Architecture: arm64 amd64
 Depends: ${shlibs:Depends}, ${misc:Depends}, indi-full, gsc, astrometry.net,
- xfce4, xfce4-goodies, xfce4-power-manager, xfce4-terminal, lightdm, dbus-x11, rpcc [arm64], rc-gui [arm64],
- network-manager-applet, nm-connection-editor, synaptic, firefox [arm64], firefox-esr [amd64], gpredict, ser-player, astap, siril, kstars-bleeding, phd2, phdlogview, firecapture, astrodmx-capture, ccdciel,
+ xfce4, xfce4-goodies, xfce4-power-manager, xfce4-terminal, lightdm, dbus-x11,
+ rpcc [arm64], rc-gui [arm64], piclone [arm64], firefox [arm64], firefox-esr [amd64],
+ network-manager-applet, nm-connection-editor, synaptic, gpredict, ser-player, astap, siril,kstars-bleeding, phd2, phdlogview, firecapture, astrodmx-capture, ccdciel,
  astroberry-os-sysmod, astroberry-manager
 Description: Astroberry OS is an operating system for Raspberry Pi for controlling astronomy equipment
  This is a meta-package that installs desktop collection of packages.
