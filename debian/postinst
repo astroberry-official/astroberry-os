@@ -9,7 +9,7 @@ if [ "$1" = "configure" ]; then
 
     # Set Astroberry OS version
     [ "$2" != "" ] && VERSION=$2 || \
-      VERSION=$(cat /usr/share/doc/astroberry-os-desktop/changelog.gz | gzip -d | grep -oP '\(\K[^)]+' | head -n1)
+      VERSION=$(cat /usr/share/doc/astroberry-os/changelog.gz | gzip -d | grep -oP '\(\K[^)]+' | head -n1)
     [ "$VERSION" != "" ] && echo "$VERSION" > /etc/astroberry/version
 
 fi
