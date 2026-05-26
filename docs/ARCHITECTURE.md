@@ -75,7 +75,7 @@ Make sure that your self-hosted actions runner is started before running any wor
 
   ✔️ **Build astroberry-os-sysmod** - compile and package astroberry os system modifications.
 
-  ✔️ **Build astroberry-os** - compile and package astroberry os meta-package that installs provides astroberry-os-lite and astroberry-os-desktop packages.
+  ✔️ **Build astroberry-os** - compile and package astroberry os meta-package that installs astroberry-os.
 
   ✔️ **Build astroberry-release** - create system image with latest stable versions of all packages as of build time.
 

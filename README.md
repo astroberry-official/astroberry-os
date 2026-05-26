@@ -98,6 +98,6 @@ EOF
 3. Install Astroberry OS:
 
 ```
-sudo apt update && sudo apt install astroberry-os-desktop
+sudo apt update && sudo apt install astroberry-os
 ```
 Visit [www.astroberry.io](https://www.astroberry.io/install) for detailed installation instructions.
