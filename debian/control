@@ -6,14 +6,7 @@ Build-Depends: debhelper (>= 9), cdbs, cmake (>= 2.4.7), cmake
 Standards-Version: 3.9.1
 Homepage: https://www.astroberry.io/
 
-Package: astroberry-os-lite
-Architecture: arm64 amd64
-Depends: ${shlibs:Depends}, ${misc:Depends}, indi-full, gsc, astrometry.net,
- astroberry-os-sysmod, astroberry-manager
-Description: Astroberry OS is an operating system for Raspberry Pi for controlling astronomy equipment
- This is a meta-package that installs minimal collection of packages.
-
-Package: astroberry-os-desktop
+Package: astroberry-os
 Architecture: arm64 amd64
 Depends: ${shlibs:Depends}, ${misc:Depends}, indi-full, gsc, astrometry.net,
  xfce4, xfce4-goodies, xfce4-power-manager, xfce4-terminal, lightdm, dbus-x11, rpcc [arm64], rc-gui [arm64],

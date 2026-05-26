@@ -11,7 +11,7 @@ set -e
 #      ASTROBERRY OS PROCEDURE
 #############################################################################
 
-install-astroberryos() {
+install-astroberry-os() {
 
     # Add Astroberry OS certificate
     curl -fsSL https://astroberry.io/debian/astroberry.asc | gpg --dearmor -o $ROOTFS/etc/apt/keyrings/astroberry.gpg
@@ -109,7 +109,7 @@ EOF
 
     # Install Astroberry OS meta package
     chroot $ROOTFS apt-get update
-    chroot $ROOTFS apt-get install -y astroberry-os-desktop
+    chroot $ROOTFS apt-get install -y astroberry-os
     chroot $ROOTFS /tmp/astroberry-os-cleanup.sh
 
 }
@@ -176,7 +176,7 @@ build-arm64() {
     mount --rbind /dev/pts "$ROOTFS/dev/pts"
 
     # Install Astroberry OS
-    install-astroberryos
+    install-astroberry-os
 
     # Synchronize filesystem
     sync
@@ -241,7 +241,7 @@ build-amd64() {
     live-boot live-config live-config-systemd rsync zenity
 
     # Install Astroberry OS
-    install-astroberryos
+    install-astroberry-os
 
     # Set default boot animation / splash
     chroot $ROOTFS plymouth-set-default-theme -R text || true
