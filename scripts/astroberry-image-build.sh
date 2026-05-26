@@ -143,8 +143,8 @@ build-arm64() {
     echo
 
     # Get Raspberry Pi OS image
-    IMAGE_URL="https://downloads.raspberrypi.org/raspios_lite_arm64/images/raspios_lite_arm64-2025-12-04"
-    IMAGE_FILE="2025-12-04-raspios-trixie-arm64-lite.img"
+    IMAGE_URL="https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2026-04-21"
+    IMAGE_FILE="2026-04-21-raspios-trixie-arm64-lite.img"
     wget -c "$IMAGE_URL/$IMAGE_FILE.xz"
     wget -c "$IMAGE_URL/$IMAGE_FILE.xz.sha256"
 
