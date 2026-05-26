@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+
+if [ "$1" = "configure" ]; then
+
+    # Ensure Astroberry directory exists
+    [ ! -d /etc/astroberry ] && mkdir -p /etc/astroberry
+
+    # Set Astroberry OS version
+    [ "$2" != "" ] && VERSION=$2 || \
+      VERSION=$(cat /usr/share/doc/astroberry-os-desktop/changelog.gz | gzip -d | grep -oP '\(\K[^)]+' | head -n1)
+    [ "$VERSION" != "" ] && echo "$VERSION" > /etc/astroberry/version
+
+fi
