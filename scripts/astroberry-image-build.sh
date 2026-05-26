@@ -64,6 +64,26 @@ if [ ! -e /usr/share/applications/firecapture.desktop ] && [ -e /usr/share/appli
     sed -i "s/Categories=.*/Categories=Education;Science;Astronomy;/g" /usr/share/applications/firecapture.desktop
 fi
 
+# Add ASTAP to menu
+if [ ! -e /usr/share/applications/astap.desktop ]; then
+wget -O /usr/share/doc/astap/astap.ico https://raw.githubusercontent.com/CanardConfit/ASTAP/refs/heads/main/astap_icon.ico || true
+cat <<EOF > /usr/share/applications/astap.desktop
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Name=ASTAP
+Comment=FITS viewer and stacking program
+Exec=/usr/bin/astap
+Icon=/usr/share/doc/astap/astap.ico
+Terminal=false
+Type=Application
+Categories=Education;Science;Astronomy;
+GenericName=ASTAP
+Comment[en_US]=FITS viewer and stacking program
+Name[en_US]=ASTAP
+EOF
+fi
+
 ######################################################################
 
 # Remove packages we don't need
