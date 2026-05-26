@@ -29,5 +29,9 @@ jobs:
           rm -rf build/deb_stellarsolver && mkdir -p build/deb_stellarsolver && \
           cp -r stellarsolver/* build/deb_stellarsolver/ && \
           cd build/deb_stellarsolver && \
+          sed -i "s/-DUSE_QT5=OFF/-DUSE_QT5=OFF -DBUILD_TESTER=ON/g" debian/rules && \
           echo "export DEB_BUILD_OPTIONS := parallel=\$(shell nproc)" >> debian/rules && \
+          echo "usr/bin/*" >> debian/libstellarsolver.install && \
+          echo "usr/share/applications/*" >> debian/libstellarsolver.install && \
+          echo "usr/share/icons/*" >> debian/libstellarsolver.install && \
           fakeroot debian/rules binary
