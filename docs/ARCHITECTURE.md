@@ -40,7 +40,7 @@ Make sure that your self-hosted actions runner is started before running any wor
 
 - **Astroberry OS [ arm64 | amd64 ]** - build Astroberry OS system image. Starting from v3.2 amd64 architecture is supported.
 
-- **Astroberry OS meta-package** - build astroberry-os-[lite|desktop|full] meta-packages that install required packages.
+- **Astroberry OS meta-package** - build astroberry-os meta-package that installs required packages.
 
 - **Astroberry OS sysmod** - build astroberry-os-sysmod that provides custom mods to the original Raspberry Pi OS.
 
