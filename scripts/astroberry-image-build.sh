@@ -155,7 +155,7 @@ build-arm64() {
     fi
 
     # Decompress image
-    unxz "$IMAGE_FILE.xz" && mv "$IMAGE_FILE" "$OUTPUT_IMAGE"
+    xz -d -k "$IMAGE_FILE.xz" && mv "$IMAGE_FILE" "$OUTPUT_IMAGE"
 
     # Verify output image
     if [ ! -e "$OUTPUT_IMAGE" ]; then
