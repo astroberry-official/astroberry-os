@@ -13,7 +13,23 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, indi-full, gsc, astrometry.net,
  rpcc [arm64], rc-gui [arm64], piclone [arm64], firefox [arm64], firefox-esr [amd64],
  network-manager-applet, nm-connection-editor, synaptic, gpredict, ser-player, astap, siril,kstars-bleeding, phd2, phdlogview, firecapture, astrodmx-capture, ccdciel,
  astroberry-os-sysmod, astroberry-manager
-Replaces: astroberry-os-lite, astroberry-os-desktop
-Conflicts: astroberry-os-lite, astroberry-os-desktop
+Replaces: astroberry-os-lite (<< 3.2), astroberry-os-desktop (<< 3.2)
+Breaks: astroberry-os-lite (<< 3.2), astroberry-os-desktop (<< 3.2)
 Description: Astroberry OS is an operating system for Raspberry Pi for controlling astronomy equipment
  This is a meta-package that installs desktop collection of packages.
+
+Package: astroberry-os-lite
+Depends: astroberry-os, ${misc:Depends}
+Architecture: all
+Priority: optional
+Section: oldlibs
+Description: Astroberry OS transitional package
+ This is a transitional package. It can be safely removed.
+
+Package: astroberry-os-desktop
+Depends: astroberry-os, ${misc:Depends}
+Architecture: all
+Priority: optional
+Section: oldlibs
+Description: Astroberry OS transitional package
+ This is a transitional package. It can be safely removed.
