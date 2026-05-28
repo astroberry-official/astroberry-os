@@ -34,4 +34,5 @@ jobs:
           cp -r kstars/packaging/linux/debian build/deb_kstars/ && \
           cd build/deb_kstars && \
           echo "export DEB_BUILD_OPTIONS := parallel=\$(shell nproc)" >> debian/rules && \
+          sed -i "s/ kstars-bleeding-dbg (= \${binary:Version}),//g" debian/control && \
           fakeroot debian/rules binary
