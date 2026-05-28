@@ -272,7 +272,7 @@ build-amd64() {
     cp $WDIR/iso-installer-amd64/astroberry-installer.desktop $ROOTFS/usr/share/applications/
 
     # Replace dock launcher: RaspberryPi Control Centre -> Astroberry OS Installer
-    sed -i 's/rpcc.desktop/astroberry-installer.desktop/g' $ROOTFS/etc/xdg/xfce4/panel/default.xml
+    sed -i 's/rpcc.desktop/astroberry-installer.desktop/g' $ROOTFS/etc/xdg/xfce4/panel/default.xml.astroberry
 
     # Synchronize filesystem
     sync
