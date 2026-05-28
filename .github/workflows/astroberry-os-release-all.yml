@@ -1,4 +1,4 @@
-name: astroberry-os-release
+name: astroberry-os
 
 on:
   workflow_dispatch:
