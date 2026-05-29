@@ -320,18 +320,25 @@ insmod png
 background_image /boot/grub/splash.png
 
 menuentry "Astroberry OS Live (64-bit)" {
-    search --set=root --file /live/filesystem.squashfs
     linux /live/vmlinuz boot=live components quiet splash noeject username=astroberry net.ifnames=0 biosdevname=0
     initrd /live/initrd
 }
 EOF
 
+    # Create the grub early stub config to find the right root folder
+    cat << EOF > iso/boot/grub/early-grub.cfg
+search --no-floppy --set=root --label "ASTROBERRY_OS"
+set prefix=($root)/boot/grub
+configfile $prefix/grub.cfg
+EOF
+
     # Create the EFI boot image
     truncate -s 10M iso/boot/grub/efi.img
     mkfs.vfat iso/boot/grub/efi.img
-    mmd -i iso/boot/grub/efi.img ::/EFI ::/EFI/boot
+    mmd -i iso/boot/grub/efi.img ::/EFI ::/EFI/boot ::/EFI/boot/grub
     mcopy -i iso/boot/grub/efi.img iso/EFI/boot/bootx64.efi ::/EFI/boot/
     mcopy -i iso/boot/grub/efi.img iso/EFI/boot/grubx64.efi ::/EFI/boot/
+    mcopy -i iso/boot/grub/efi.img iso/boot/grub/early-grub.cfg ::/EFI/boot/grub/grub.cfg
 
     # Create the el-torito image for legacy BIOS booting
     grub-mkimage -O i386-pc-eltorito \
