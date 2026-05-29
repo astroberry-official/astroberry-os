@@ -7,6 +7,8 @@
 
 set -e
 
+export DEBIAN_FRONTEND=noninteractive
+
 #############################################################################
 #      ASTROBERRY OS PROCEDURE
 #############################################################################
@@ -310,7 +312,14 @@ build-amd64() {
     # Add grub background
     cp $ROOTFS/usr/share/astroberry-artwork/grub/milkyway-galaxy-center-and-its-companions_1920x1080.png iso/boot/grub/splash.png
 
-    # Create the grub configuration for the iso
+    # Create the grub early stub config to find the right root folder
+    cat << EOF > iso/boot/grub/grub.cfg.efi
+search --no-floppy --set=root --label "ASTROBERRY_OS"
+set prefix=(\$root)/boot/grub
+configfile (\$root)/boot/grub/grub.cfg
+EOF
+
+    # Create main grub configuration
     cat << EOF > iso/boot/grub/grub.cfg
 set default=0
 set timeout=5
@@ -326,20 +335,13 @@ menuentry "Astroberry OS Live (64-bit)" {
 }
 EOF
 
-    # Create the grub early stub config to find the right root folder
-    cat << EOF > iso/boot/grub/early-grub.cfg
-search --no-floppy --set=root --label "ASTROBERRY_OS"
-set prefix=($root)/boot/grub
-configfile $prefix/grub.cfg
-EOF
-
     # Create the EFI boot image
     truncate -s 10M iso/boot/grub/efi.img
     mkfs.vfat iso/boot/grub/efi.img
-    mmd -i iso/boot/grub/efi.img ::/EFI ::/EFI/boot ::/EFI/boot/grub
+    mmd -i iso/boot/grub/efi.img ::/EFI ::/EFI/boot ::/boot ::/boot/grub
     mcopy -i iso/boot/grub/efi.img iso/EFI/boot/bootx64.efi ::/EFI/boot/
     mcopy -i iso/boot/grub/efi.img iso/EFI/boot/grubx64.efi ::/EFI/boot/
-    mcopy -i iso/boot/grub/efi.img iso/boot/grub/early-grub.cfg ::/EFI/boot/grub/grub.cfg
+    mcopy -i iso/boot/grub/efi.img iso/boot/grub/grub.cfg.efi ::/boot/grub/grub.cfg
 
     # Create the el-torito image for legacy BIOS booting
     grub-mkimage -O i386-pc-eltorito \
