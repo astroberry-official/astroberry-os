@@ -325,9 +325,25 @@ set default=0
 set timeout=5
 
 loadfont unicode
-terminal_output gfxterm
+set gfxmode=auto
+insmod all_video
+insmod gfxterm
 insmod png
-background_image /boot/grub/splash.png
+
+set color_normal=light-gray/black
+set color_highlight=white/black
+
+terminal_output gfxterm
+
+insmod play
+play 960 440 1 0 4 440 1
+
+if [ -e /boot/grub/splash.png ]; then
+    background_image /boot/grub/splash.png
+else
+    set menu_color_normal=cyan/blue
+    set menu_color_highlight=white/blue
+fi
 
 menuentry "Astroberry OS Live (64-bit)" {
     linux /live/vmlinuz boot=live components quiet splash noeject username=astroberry net.ifnames=0 biosdevname=0
