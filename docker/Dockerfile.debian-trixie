@@ -9,7 +9,7 @@ WORKDIR /work
 
 # Core tools
 RUN apt-get update && apt-get -y upgrade && apt-get install -y \
-    git cmake extra-cmake-modules build-essential \
+    git cmake extra-cmake-modules build-essential ninja-build \
     cdbs debhelper pkg-kde-tools reprepro sshpass libusb-1.0-0-dev zlib1g-dev \
     curl wget gpg pigz gzip zstd tar xz-utils udev e2fsprogs parted
 
@@ -46,7 +46,8 @@ RUN apt-get install -y \
     libgps-dev libraw-dev libdc1394-dev libgphoto2-dev libtiff-dev libahp-xc-dev \
     libboost-dev libboost-regex-dev libboost-program-options-dev librtlsdr-dev liblimesuite-dev \
     libzmq3-dev liburjtag-dev libdfu-dev fxload libgpiod-dev libpigpiod-if2-1t64 libpigpiod-if-dev \
-    libglib2.0-dev libaravis-dev libcamera-dev libnutclient-dev libsystemd-dev systemd-dev
+    libglib2.0-dev libaravis-dev libcamera-dev libnutclient-dev libsystemd-dev systemd-dev \
+    libogg-dev libtheora-dev
 
 # INDI libcamera dependencies
 RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
