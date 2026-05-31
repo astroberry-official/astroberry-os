@@ -24,11 +24,6 @@ jobs:
           ref: refs/tags/v2.2.1.1
           path: 'indi-3rdparty'
 
-      - name: Fix INDI 3rd Party Sources
-        run: |
-          for i in $(ls indi-3rdparty/debian/*/rules);do chmod 755 $i; done
-          sed -i "s/^lib/usr\/lib/g" indi-3rdparty/debian/lib*/*.install
-
       - name: Install INDI Core
         run: |
           dpkg -i build/indi-bin_*_${{ matrix.architecture }}.deb build/libindi1_*_${{ matrix.architecture }}.deb build/libindi-data_*_all.deb build/libindi-dev_*_${{ matrix.architecture }}.deb

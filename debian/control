@@ -8,7 +8,7 @@ Homepage: https://www.astroberry.io/
 
 Package: astroberry-os
 Architecture: arm64 amd64
-Depends: ${shlibs:Depends}, ${misc:Depends}, indi-full, gsc, astrometry.net,
+Depends: ${shlibs:Depends}, ${misc:Depends}, indi-3rdparty-drivers, gsc, astrometry.net,
  xfce4, xfce4-goodies, xfce4-power-manager, xfce4-terminal, lightdm, dbus-x11,
  rpcc [arm64], rc-gui [arm64], piclone [arm64], firefox [arm64], firefox-esr [amd64],
  network-manager-applet, nm-connection-editor, synaptic,
