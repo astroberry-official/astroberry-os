@@ -1,4 +1,4 @@
-name: astroberry-os
+name: astroberry-os-all
 
 on:
   workflow_dispatch:
