@@ -252,6 +252,7 @@ build-amd64() {
 
     # Add Debian repositories and boot components
     sed -i 's/main$/main contrib non-free-firmware non-free/' $ROOTFS/etc/apt/sources.list
+    echo "deb http://security.debian.org/debian-security trixie-security main" >> $ROOTFS/etc/apt/sources.list
     chroot $ROOTFS apt-get update
     chroot $ROOTFS apt-get install -y --no-install-recommends linux-image-generic firmware-linux-nonfree \
     shim-signed grub-efi-amd64-signed grub-efi-amd64 grub-pc-bin \
