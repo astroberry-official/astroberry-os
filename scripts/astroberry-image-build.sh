@@ -66,7 +66,7 @@ fi
 
 # Add ASTAP to menu
 if [ ! -e /usr/share/applications/astap.desktop ]; then
-    wget -O /usr/share/doc/astap/astap.ico https://raw.githubusercontent.com/CanardConfit/ASTAP/refs/heads/main/astap_icon.ico || true
+    curl -fsSL https://raw.githubusercontent.com/CanardConfit/ASTAP/refs/heads/main/astap_icon.ico > /usr/share/doc/astap/astap.ico || true
     echo "[Desktop Entry]
     Version=1.0
     Encoding=UTF-8
