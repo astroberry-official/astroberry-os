@@ -30,15 +30,15 @@ jobs:
 
       - name: Install INDI 3rd Party Libraries
         run: |
-          dpkg -i --force-overwrite $(ls build/lib* | grep -v dbgsym | grep -v libindi | grep -v dev) && \
-          dpkg -i --force-overwrite $(ls build/lib* | grep -v dbgsym | grep -v libindi | grep dev)
+          dpkg -i build/indi-3rdparty-libs_*_${{ matrix.architecture }}.deb
 
       - name: Build PHD2 Packages
         run: |
           rm -rf build/deb_phd2 && mkdir -p build/deb_phd2 && \
           cp -r phd2/* build/deb_phd2/ && \
-          sed -i "s/-DOPENSOURCE_ONLY=1/-DOPENSOURCE_ONLY=0/g" build/deb_phd2/debian/rules && \
-          sed -i "/dh_auto_configure --/s/$/ -DFETCHCONTENT_FULLY_DISCONNECTED=0/" build/deb_phd2/debian/rules && \
           cd build/deb_phd2 && \
+          sed -i "s/(2.6.14)/(2.6.14-1)/g" debian/changelog && \
+          sed -i "s/-DOPENSOURCE_ONLY=1/-DOPENSOURCE_ONLY=0/g" debian/rules && \
+          sed -i "/dh_auto_configure --/s/$/ -DFETCHCONTENT_FULLY_DISCONNECTED=0/" debian/rules && \
           echo "export DEB_BUILD_OPTIONS := parallel=\$(shell nproc)" >> debian/rules && \
           fakeroot debian/rules binary

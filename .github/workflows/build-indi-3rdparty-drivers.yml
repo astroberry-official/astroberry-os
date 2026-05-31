@@ -21,14 +21,8 @@ jobs:
         uses: actions/checkout@v6
         with:
           repository: 'indilib/indi-3rdparty'
-          ref: refs/tags/v2.2.0
+          ref: refs/tags/v2.2.1.1
           path: 'indi-3rdparty'
-
-      - name: Fix INDI 3rd Party Sources
-        run: |
-          for i in $(ls indi-3rdparty/debian/*/rules);do chmod 755 $i;done
-          sed -i "s/^lib/usr\/lib/g" indi-3rdparty/debian/indi-*/*.install
-          sed -i "s/\/lib\/udev\/rules.d/\/usr\/lib\/udev\/rules.d/g" indi-3rdparty/indi-openogma/CMakeLists.txt
 
       - name: Install INDI Core
         run: |
@@ -36,11 +30,14 @@ jobs:
 
       - name: Install INDI 3rd Party Libraries
         run: |
-          dpkg -i --force-overwrite $(ls build/lib* | grep -v dbgsym | grep -v libindi | grep -v dev) && dpkg -i --force-overwrite $(ls build/lib* | grep -v dbgsym | grep -v libindi | grep dev)
+          dpkg -i build/indi-3rdparty-libs_*_${{ matrix.architecture }}.deb
 
       - name: Build INDI 3rd Party Drivers
         run: |
-          DRIVERS=$(basename -a indi-3rdparty/indi-* | grep -v indi-libcamera | grep -v indi-bno-imu | grep -v indi-celestron-origin | grep -v indi-icm-imu) && \
-          indi-3rdparty/scripts/indi-3rdparty-deb.sh $DRIVERS && \
-          mkdir indi-3rdparty/indi-full && \
-          indi-3rdparty/scripts/indi-3rdparty-deb.sh indi-full
+          mkdir -p build/deb_indi-3rdparty-drivers && \
+          cp -r indi-3rdparty/debian/indi-3rdparty-drivers build/deb_indi-3rdparty-drivers/debian && \
+          cp -r indi-3rdparty/cmake_modules build/deb_indi-3rdparty-drivers/ && \
+          cp indi-3rdparty/CMakeLists.txt build/deb_indi-3rdparty-drivers/ && \
+          cp -r indi-3rdparty/indi-* build/deb_indi-3rdparty-drivers/ && \
+          cd build/deb_indi-3rdparty-drivers && \
+          fakeroot debian/rules binary

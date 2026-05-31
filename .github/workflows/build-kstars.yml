@@ -24,8 +24,9 @@ jobs:
 
       - name: Install KStars Dependencies
         run: |
-          dpkg -i build/libstellarsolver_*.deb build/libstellarsolver-dev_*.deb \
-          build/libindi1_*.deb build/libindi-dev_*.deb build/libindi-data_*.deb build/indi-bin_*.deb
+          dpkg -i build/libstellarsolver_*_${{ matrix.architecture }}.deb build/libstellarsolver-dev_*_${{ matrix.architecture }}.deb && \
+          dpkg -i build/indi-bin_*_${{ matrix.architecture }}.deb build/libindi1_*_${{ matrix.architecture }}.deb build/libindi-data_*_all.deb build/libindi-dev_*_${{ matrix.architecture }}.deb && \
+          dpkg -i build/indi-3rdparty-libs_*_${{ matrix.architecture }}.deb
 
       - name: Build Kstars Packages
         run: |
@@ -33,6 +34,8 @@ jobs:
           cp -r kstars/* build/deb_kstars/ && \
           cp -r kstars/packaging/linux/debian build/deb_kstars/ && \
           cd build/deb_kstars && \
+          sed -i "s/(6:3.8.2)/(6:3.8.2-1)/g" debian/changelog && \
+          sed -i "s/knotifications5/knotifications6/g" debian/kstars-bleeding-data.install && \
           echo "export DEB_BUILD_OPTIONS := parallel=\$(shell nproc)" >> debian/rules && \
           sed -i "s/ kstars-bleeding-dbg (= \${binary:Version}),//g" debian/control && \
           fakeroot debian/rules binary
