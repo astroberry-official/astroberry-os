@@ -20,7 +20,7 @@ jobs:
       - name: Get KStars Sources
         run: |
           if [ -d kstars ]; then rm -rf kstars; fi
-          git clone --depth 1 --branch stable-3.8.2 https://invent.kde.org/education/kstars.git
+          git clone --depth 1 --branch stable-3.8.3 https://invent.kde.org/education/kstars.git
 
       - name: Install KStars Dependencies
         run: |
@@ -34,8 +34,6 @@ jobs:
           cp -r kstars/* build/deb_kstars/ && \
           cp -r kstars/packaging/linux/debian build/deb_kstars/ && \
           cd build/deb_kstars && \
-          sed -i "s/(6:3.8.2)/(6:3.8.2-1)/g" debian/changelog && \
-          sed -i "s/knotifications5/knotifications6/g" debian/kstars-bleeding-data.install && \
           echo "export DEB_BUILD_OPTIONS := parallel=\$(shell nproc)" >> debian/rules && \
           sed -i "s/ kstars-bleeding-dbg (= \${binary:Version}),//g" debian/control && \
           fakeroot debian/rules binary
