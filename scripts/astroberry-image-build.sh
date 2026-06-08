@@ -287,11 +287,10 @@ build-amd64() {
 
     # Create the iso structure
     [ -e iso ] && rm -rf iso
-    mkdir -p iso/EFI/boot
-    mkdir -p iso/boot/grub/i386-pc
-    mkdir -p iso/boot/grub/x86_64-efi
+    mkdir -p iso/EFI/BOOT
     mkdir -p iso/boot/grub/fonts
     mkdir -p iso/live
+    mkdir -p iso/isolinux
 
     # Create the squashfs image with xz compression
     mksquashfs $ROOTFS iso/live/filesystem.squashfs -comp xz
@@ -303,21 +302,14 @@ build-amd64() {
     cp -v $INITRD iso/live/initrd
 
     # Copy the shim and grub bootloader to the iso
-    cp $ROOTFS/usr/lib/shim/shimx64.efi.signed iso/EFI/boot/bootx64.efi
-    cp $ROOTFS/usr/lib/grub/x86_64-efi-signed/gcdx64.efi.signed iso/EFI/boot/grubx64.efi
+    cp $ROOTFS/usr/lib/shim/shimx64.efi.signed iso/EFI/BOOT/BOOTX64.efi
+    cp $ROOTFS/usr/lib/grub/x86_64-efi-signed/gcdx64.efi.signed iso/EFI/BOOT/grubx64.efi
 
     # Copy font for grub legacy boot
     cp $ROOTFS/boot/grub/unicode.pf2 iso/boot/grub/fonts/
 
     # Add grub background
     cp $ROOTFS/usr/share/astroberry-artwork/grub/milkyway-galaxy-center-and-its-companions_1920x1080.png iso/boot/grub/splash.png
-
-    # Create the grub early stub config to find the right root folder
-    cat << EOF > iso/boot/grub/grub.cfg.efi
-search --no-floppy --set=root --label "ASTROBERRY_OS"
-set prefix=(\$root)/boot/grub
-configfile (\$root)/boot/grub/grub.cfg
-EOF
 
     # Create main grub configuration
     cat << EOF > iso/boot/grub/grub.cfg
@@ -352,32 +344,29 @@ menuentry "Astroberry OS Live (64-bit)" {
 EOF
 
     # Create the EFI boot image
-    truncate -s 10M iso/boot/grub/efi.img
-    mkfs.vfat iso/boot/grub/efi.img
-    mmd -i iso/boot/grub/efi.img ::/EFI ::/EFI/boot ::/boot ::/boot/grub
-    mcopy -i iso/boot/grub/efi.img iso/EFI/boot/bootx64.efi ::/EFI/boot/
-    mcopy -i iso/boot/grub/efi.img iso/EFI/boot/grubx64.efi ::/EFI/boot/
-    mcopy -i iso/boot/grub/efi.img iso/boot/grub/grub.cfg.efi ::/boot/grub/grub.cfg
-
-    # Create the el-torito image for legacy BIOS booting
-    grub-mkimage -O i386-pc-eltorito \
-        -o iso/boot/grub/i386-pc/eltorito.img \
-        -p /boot/grub \
-        biosdisk iso9660 search test ls normal cat echo halt reboot linux gfxterm_background png
+    truncate -s 5M iso/boot/grub/efi.img
+    mkfs.vfat -F 12 iso/boot/grub/efi.img
+    mmd -i iso/boot/grub/efi.img ::/EFI ::/EFI/BOOT
+    mcopy -i iso/boot/grub/efi.img iso/EFI/BOOT/BOOTX64.efi ::/EFI/BOOT/
+    mcopy -i iso/boot/grub/efi.img iso/EFI/BOOT/grubx64.efi ::/EFI/BOOT/
+    
+    # Legacy boot support
+    cp /usr/lib/ISOLINUX/isolinux.bin iso/isolinux/isolinux.bin
+    cp /usr/lib/syslinux/modules/bios/ldlinux.c32 iso/isolinux/ldlinux.c32
 
     # Create the final ISO image
     xorriso -as mkisofs \
         -iso-level 3 -rock -joliet \
         -volid "ASTROBERRY_OS" \
+        -isohybrid-mbr /usr/lib/ISOLINUX/isohdpfx.bin \
         -partition_offset 16 \
-        -append_partition 2 0xef iso/boot/grub/efi.img \
-        -appended_part_as_gpt \
         -c boot.catalog \
-        -b boot/grub/i386-pc/eltorito.img \
+        -b isolinux/isolinux.bin \
         -no-emul-boot -boot-load-size 4 -boot-info-table \
         -eltorito-alt-boot \
-        -e '--interval:appended_partition_2:all::' \
+        -e boot/grub/efi.img \
         -no-emul-boot \
+        -isohybrid-gpt-basdat \
         -o $OUTPUT_IMAGE \
         iso/
 
