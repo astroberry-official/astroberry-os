@@ -335,9 +335,6 @@ set color_highlight=white/black
 
 terminal_output gfxterm
 
-insmod play
-play 960 440 1 0 4 440 1
-
 if [ -e /boot/grub/splash.png ]; then
     background_image /boot/grub/splash.png
 else
@@ -349,6 +346,10 @@ menuentry "Astroberry OS Live (64-bit)" {
     linux /live/vmlinuz boot=live components quiet splash noeject username=astroberry net.ifnames=0 biosdevname=0
     initrd /live/initrd
 }
+menuentry "Astroberry OS Live (64-bit fail-safe mode)" {
+    linux /live/vmlinuz boot=live components memtest noapic noapm nodma nomce nosmp nosplash vga=788 noeject username=astroberry net.ifnames=0 biosdevname=0
+    initrd /live/initrd
+}
 EOF
 
     # Create the EFI boot image
@@ -358,6 +359,9 @@ EOF
     mcopy -i iso/boot/grub/efi.img iso/EFI/boot/bootx64.efi ::/EFI/boot/
     mcopy -i iso/boot/grub/efi.img iso/EFI/boot/grubx64.efi ::/EFI/boot/
     mcopy -i iso/boot/grub/efi.img iso/boot/grub/grub.cfg.efi ::/boot/grub/grub.cfg
+
+    # Remove the grub early stub config - it is already in efi.img
+    rm -f iso/boot/grub/grub.cfg.efi
 
     # Create the el-torito image for legacy BIOS booting
     grub-mkimage -O i386-pc-eltorito \
