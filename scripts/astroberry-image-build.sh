@@ -256,7 +256,9 @@ build-amd64() {
     sed -i 's/main$/main contrib non-free-firmware non-free/' $ROOTFS/etc/apt/sources.list
     echo "deb http://security.debian.org/debian-security trixie-security main" >> $ROOTFS/etc/apt/sources.list
     chroot $ROOTFS apt-get update
-    chroot $ROOTFS apt-get install -y --no-install-recommends linux-image-generic firmware-linux-nonfree \
+    chroot $ROOTFS apt-get install -y --no-install-recommends \
+    linux-image-generic firmware-linux firmware-iwlwifi firmware-realtek \
+    firmware-intel-graphics firmware-amd-graphics firmware-nvidia-graphics \
     shim-signed grub-efi-amd64-signed grub-efi-amd64 grub-pc-bin \
     intel-microcode va-driver-all haveged zstd cloud-init sudo console-setup \
     live-boot live-config live-config-systemd rsync zenity
