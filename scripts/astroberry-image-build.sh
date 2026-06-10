@@ -290,8 +290,6 @@ build-amd64() {
     # Create the iso structure
     [ -e iso ] && rm -rf iso
     mkdir -p iso/EFI/boot
-    mkdir -p iso/boot/grub/i386-pc
-    mkdir -p iso/boot/grub/x86_64-efi
     mkdir -p iso/boot/grub/fonts
     mkdir -p iso/live
 
@@ -367,7 +365,7 @@ EOF
 
     # Create the el-torito image for legacy BIOS booting
     grub-mkimage -O i386-pc-eltorito \
-        -o iso/boot/grub/i386-pc/eltorito.img \
+        -o iso/boot/grub/eltorito.img \
         -p /boot/grub \
         biosdisk iso9660 search test ls normal cat echo halt reboot linux gfxterm_background png
 
@@ -379,7 +377,7 @@ EOF
         -append_partition 2 0xef iso/boot/grub/efi.img \
         -appended_part_as_gpt \
         -c boot.catalog \
-        -b boot/grub/i386-pc/eltorito.img \
+        -b boot/grub/eltorito.img \
         -no-emul-boot -boot-load-size 4 -boot-info-table \
         -eltorito-alt-boot \
         -e '--interval:appended_partition_2:all::' \
