@@ -14,6 +14,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, indi-3rdparty-drivers, gsc, astrome
  network-manager-applet, nm-connection-editor, synaptic,
  gpredict, ser-player, astap, siril, kstars-bleeding, phd2, phdlogview,
  firecapture, astrodmx-capture, ccdciel,
+ satellite-gtk, virtualgps,
  astroberry-os-sysmod, astroberry-manager
 Replaces: astroberry-os-lite (<< 3.2), astroberry-os-desktop (<< 3.2)
 Breaks: astroberry-os-lite (<< 3.2), astroberry-os-desktop (<< 3.2)
