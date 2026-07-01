@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: Get StellarSolver Sources
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: 'rlancaste/stellarsolver'
           # ref: refs/tags/2.7

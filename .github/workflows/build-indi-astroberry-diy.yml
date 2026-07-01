@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: Get Sources of astroberry-diy
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: 'rkaczorek/astroberry-diy'
           ref: 'master'

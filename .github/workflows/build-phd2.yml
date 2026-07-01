@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: Get PHD2 Sources
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: 'OpenPHDGuiding/phd2'
           ref: refs/tags/v2.6.14

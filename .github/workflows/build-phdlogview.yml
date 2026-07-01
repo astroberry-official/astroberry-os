@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: Get PHD2 Log Viewer Sources
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: 'agalasso/phdlogview'
           ref: refs/tags/v0.6.4

@@ -24,7 +24,7 @@ jobs:
           dpkg -i build/indi-bin_*_${{ matrix.architecture }}.deb build/libindi1_*_${{ matrix.architecture }}.deb build/libindi-data_*_all.deb build/libindi-dev_*_${{ matrix.architecture }}.deb
 
       - name: Get the sources of PyIndi Client
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: 'rkaczorek/pyindi-client'
           ref: astroberry
