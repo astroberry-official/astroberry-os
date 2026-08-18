@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: Get the sources
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: 'astroberry-official/astroberry-os-sysmod'
           path: 'astroberry-os-sysmod'

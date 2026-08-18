@@ -23,7 +23,7 @@ jobs:
           apt-get update && apt-get install -y python3 dh-python python3-setuptools pybuild-plugin-pyproject python3-pytest
 
       - name: Get the sources of GPSD Client
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: 'rkaczorek/gpsdclient'
           ref: astroberry
