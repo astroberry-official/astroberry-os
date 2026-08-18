@@ -34,7 +34,7 @@ jobs:
 
       - name: Build INDI 3rd Party Drivers
         run: |
-          mkdir -p build/deb_indi-3rdparty-drivers && \
+          rm -rf build/deb_indi-3rdparty-drivers && mkdir -p build/deb_indi-3rdparty-drivers && \
           cp -r indi-3rdparty/debian/indi-3rdparty-drivers build/deb_indi-3rdparty-drivers/debian && \
           cp -r indi-3rdparty/cmake_modules build/deb_indi-3rdparty-drivers/ && \
           cp indi-3rdparty/CMakeLists.txt build/deb_indi-3rdparty-drivers/ && \
