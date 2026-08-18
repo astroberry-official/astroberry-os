@@ -7,6 +7,8 @@
 
 set -e
 
+export DEBIAN_FRONTEND=noninteractive
+
 #############################################################################
 #      ASTROBERRY OS PROCEDURE
 #############################################################################
@@ -254,7 +256,9 @@ build-amd64() {
     sed -i 's/main$/main contrib non-free-firmware non-free/' $ROOTFS/etc/apt/sources.list
     echo "deb http://security.debian.org/debian-security trixie-security main" >> $ROOTFS/etc/apt/sources.list
     chroot $ROOTFS apt-get update
-    chroot $ROOTFS apt-get install -y --no-install-recommends linux-image-generic firmware-linux-nonfree \
+    chroot $ROOTFS apt-get install -y --no-install-recommends \
+    linux-image-generic firmware-linux firmware-iwlwifi firmware-realtek \
+    firmware-intel-graphics firmware-amd-graphics firmware-nvidia-graphics \
     shim-signed grub-efi-amd64-signed grub-efi-amd64 grub-pc-bin \
     intel-microcode va-driver-all haveged zstd cloud-init sudo console-setup \
     live-boot live-config live-config-systemd rsync zenity
@@ -286,10 +290,9 @@ build-amd64() {
     # Create the iso structure
     [ -e iso ] && rm -rf iso
     mkdir -p iso/EFI/boot
-    mkdir -p iso/boot/grub/i386-pc
-    mkdir -p iso/boot/grub/x86_64-efi
-    mkdir -p iso/boot/grub/fonts
+    mkdir -p iso/boot/grub
     mkdir -p iso/live
+    mkdir -p iso/isolinux
 
     # Create the squashfs image with xz compression
     mksquashfs $ROOTFS iso/live/filesystem.squashfs -comp xz
@@ -305,54 +308,118 @@ build-amd64() {
     cp $ROOTFS/usr/lib/grub/x86_64-efi-signed/gcdx64.efi.signed iso/EFI/boot/grubx64.efi
 
     # Copy font for grub legacy boot
-    cp $ROOTFS/boot/grub/unicode.pf2 iso/boot/grub/fonts/
+    cp $ROOTFS/boot/grub/unicode.pf2 iso/boot/grub/
 
     # Add grub background
     cp $ROOTFS/usr/share/astroberry-artwork/grub/milkyway-galaxy-center-and-its-companions_1920x1080.png iso/boot/grub/splash.png
 
-    # Create the grub configuration for the iso
+    # Create the grub early stub config to find the right root folder
+    cat << EOF > iso/boot/grub/grub.cfg.efi
+search --no-floppy --set=root --label "ASTROBERRY_OS"
+set prefix=(\$root)/boot/grub
+configfile (\$root)/boot/grub/grub.cfg
+EOF
+
+    # Create main grub configuration
     cat << EOF > iso/boot/grub/grub.cfg
 set default=0
 set timeout=5
 
 loadfont unicode
-terminal_output gfxterm
+set gfxmode=auto
+insmod all_video
+insmod gfxterm
 insmod png
-background_image /boot/grub/splash.png
+
+set color_normal=light-gray/black
+set color_highlight=white/black
+
+terminal_output gfxterm
+
+if [ -e /boot/grub/splash.png ]; then
+    background_image /boot/grub/splash.png
+else
+    set menu_color_normal=cyan/blue
+    set menu_color_highlight=white/blue
+fi
 
 menuentry "Astroberry OS Live (64-bit)" {
-    search --set=root --file /live/filesystem.squashfs
     linux /live/vmlinuz boot=live components quiet splash noeject username=astroberry net.ifnames=0 biosdevname=0
+    initrd /live/initrd
+}
+menuentry "Astroberry OS Live (64-bit fail-safe mode)" {
+    linux /live/vmlinuz boot=live components memtest noapic noapm nodma nomce nosmp nosplash vga=788 noeject username=astroberry net.ifnames=0 biosdevname=0
     initrd /live/initrd
 }
 EOF
 
+    # Legacy boot support
+    cp /usr/lib/ISOLINUX/isolinux.bin iso/isolinux/
+    cp /usr/lib/syslinux/modules/bios/ldlinux.c32 iso/isolinux/
+    cp /usr/lib/syslinux/modules/bios/libcom32.c32 iso/isolinux/
+    cp /usr/lib/syslinux/modules/bios/libutil.c32 iso/isolinux/
+    cp /usr/lib/syslinux/modules/bios/vesamenu.c32 iso/isolinux/
+
+    # Create isolinux config
+    cat << EOF > iso/isolinux/isolinux.cfg
+menu title Boot menu
+menu resolution 1920 1080
+menu background /boot/grub/splash.png
+menu color title        * #FFFFFFFF *
+menu color border       * #80ffffff #00000000 none
+menu color sel          * #ffffffff #76a1d0ff *
+menu color hotsel       1;7;37;40 #ffffffff #76a1d0ff *
+menu color tabmsg       * #ffffffff #00000000 *
+menu color help         37;40 #ffdddd00 #00000000 none
+menu vshift 6
+menu rows 10
+menu helpmsgrow 15
+menu cmdlinerow 16
+menu timeoutrow 16
+menu tabmsgrow 13
+menu tabmsg Press ENTER to boot or TAB to edit a menu entry
+
+label live
+        menu label ^Astroberry OS Live (64-bit)
+        menu default
+        linux /live/vmlinuz boot=live components quiet splash noeject username=astroberry net.ifnames=0 biosdevname=0
+        initrd /live/initrd
+
+label live-failsafe
+        menu label Astroberry OS Live (64-bit fail-safe mode)
+        linux /live/vmlinuz boot=live components memtest noapic noapm nodma nomce nosmp nosplash vga=788 noeject username=astroberry net.ifnames=0 biosdevname=0
+        initrd /live/initrd
+
+menu clear
+default vesamenu.c32
+prompt 0
+timeout 50
+EOF
+
     # Create the EFI boot image
-    truncate -s 10M iso/boot/grub/efi.img
-    mkfs.vfat iso/boot/grub/efi.img
-    mmd -i iso/boot/grub/efi.img ::/EFI ::/EFI/boot
+    truncate -s 5M iso/boot/grub/efi.img
+    mkfs.vfat -F 12 iso/boot/grub/efi.img
+    mmd -i iso/boot/grub/efi.img ::/EFI ::/EFI/boot ::/boot ::/boot/grub
     mcopy -i iso/boot/grub/efi.img iso/EFI/boot/bootx64.efi ::/EFI/boot/
     mcopy -i iso/boot/grub/efi.img iso/EFI/boot/grubx64.efi ::/EFI/boot/
+    mcopy -i iso/boot/grub/efi.img iso/boot/grub/grub.cfg.efi ::/boot/grub/grub.cfg
 
-    # Create the el-torito image for legacy BIOS booting
-    grub-mkimage -O i386-pc-eltorito \
-        -o iso/boot/grub/i386-pc/eltorito.img \
-        -p /boot/grub \
-        biosdisk iso9660 search test ls normal cat echo halt reboot linux gfxterm_background png
+    # Remove the grub early stub config - it is already in efi.img
+    rm -f iso/boot/grub/grub.cfg.efi
 
     # Create the final ISO image
     xorriso -as mkisofs \
         -iso-level 3 -rock -joliet \
         -volid "ASTROBERRY_OS" \
+        -isohybrid-mbr /usr/lib/ISOLINUX/isohdpfx.bin \
         -partition_offset 16 \
-        -append_partition 2 0xef iso/boot/grub/efi.img \
-        -appended_part_as_gpt \
         -c boot.catalog \
-        -b boot/grub/i386-pc/eltorito.img \
+        -b isolinux/isolinux.bin \
         -no-emul-boot -boot-load-size 4 -boot-info-table \
         -eltorito-alt-boot \
-        -e '--interval:appended_partition_2:all::' \
+        -e boot/grub/efi.img \
         -no-emul-boot \
+        -isohybrid-gpt-basdat \
         -o $OUTPUT_IMAGE \
         iso/
 

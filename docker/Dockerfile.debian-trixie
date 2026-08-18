@@ -14,7 +14,7 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y \
     curl wget gpg pigz gzip zstd tar xz-utils udev e2fsprogs parted
 
 # Rasperry Pi platform
-RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
+RUN if [ "$TARGETPLATFORM" = "linux/arm64" ] || [ "$TARGETPLATFORM" = "linux/aarch64" ]; then \
     curl -L https://raw.githubusercontent.com/Drewsif/PiShrink/master/pishrink.sh | tee /usr/local/bin/pishrink.sh && chmod +x /usr/local/bin/pishrink.sh && \
     curl -L https://archive.raspberrypi.com/debian/raspberrypi.gpg.key | tee /etc/apt/trusted.gpg.d/raspi.asc && \
     echo "deb [trusted=yes] http://archive.raspberrypi.com/debian/ trixie main" > /etc/apt/sources.list.d/raspi.list && \
@@ -22,8 +22,8 @@ RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
     fi
 
 # Amd64 platform
-RUN if [ "$TARGETPLATFORM" = "linux/amd64" ] || [ "$TARGETPLATFORM" = "linux/x86_64" ] || [ "$TARGETPLATFORM" = "linux/x64" ] || [ "$TARGETPLATFORM" = "linux/aarch64" ]; then \
-    apt-get -y install squashfs-tools xorriso debootstrap dosfstools \
+RUN if [ "$TARGETPLATFORM" = "linux/amd64" ] || [ "$TARGETPLATFORM" = "linux/x86_64" ] || [ "$TARGETPLATFORM" = "linux/x64" ]; then \
+    apt-get -y install squashfs-tools xorriso debootstrap dosfstools isolinux syslinux-common \
     grub-pc-bin grub-efi-amd64-bin shim-signed mtools libisoburn1 cpio; \
     fi
 
@@ -50,7 +50,7 @@ RUN apt-get install -y \
     libogg-dev libtheora-dev
 
 # INDI libcamera dependencies
-RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
+RUN if [ "$TARGETPLATFORM" = "linux/arm64" ] || [ "$TARGETPLATFORM" = "linux/aarch64" ]; then \
     apt-get install -y rpicam-apps librpicam-app-dev; \
     fi
 
